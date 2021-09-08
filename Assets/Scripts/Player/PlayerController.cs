@@ -11,11 +11,13 @@ public class PlayerController : MonoBehaviour
     public float dashCooldown;
 
     private Rigidbody2D playerRb;
+    private Health playerHealth;
     // Start is called before the first frame update
     void Start()
     {
         dashIsReady = true;
         playerRb = GetComponent<Rigidbody2D>();
+        playerHealth = GetComponent<Health>();
     }
 
     // Update is called once per frame
@@ -83,5 +85,16 @@ public class PlayerController : MonoBehaviour
             Destroy(collision.gameObject);
             
         }
+
+        if(collision.CompareTag("DangerObstacle"))
+        {
+            //TODO: Перенести урон и силу отталкивания в отдельный объект
+            Debug.Log("DangerObstacle collided with player");
+            playerHealth.GetDamage(5);
+            Vector2 throwAwayVector = transform.position - collision.transform.position;
+            playerRb.AddForce(throwAwayVector * 5, ForceMode2D.Impulse);
+        }
     }
+
+   
 }
