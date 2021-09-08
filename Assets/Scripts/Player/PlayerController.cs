@@ -32,7 +32,9 @@ public class PlayerController : MonoBehaviour
     {
         float horizontalInput = Input.GetAxis("Horizontal");
 
-        transform.Translate(Vector3.right * horizontalInput * speed * Time.deltaTime);
+        //transform.Translate(Vector3.right * horizontalInput * speed * Time.deltaTime);
+
+        playerRb.AddForce(Vector3.right * horizontalInput * speed);
     }
 
     void Jump()
@@ -92,7 +94,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("DangerObstacle collided with player");
             playerHealth.GetDamage(5);
             Vector2 throwAwayVector = transform.position - collision.transform.position;
-            playerRb.AddForce(throwAwayVector * 5, ForceMode2D.Impulse);
+            playerRb.AddForce(throwAwayVector * 200, ForceMode2D.Impulse);
         }
     }
 

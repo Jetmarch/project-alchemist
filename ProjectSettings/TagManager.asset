@@ -7,6 +7,7 @@ TagManager:
   - Floor
   - Ingredient
   - Enemy
+  - DangerObstacle
   layers:
   - Default
   - TransparentFX
