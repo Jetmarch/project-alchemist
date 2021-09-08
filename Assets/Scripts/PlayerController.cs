@@ -64,5 +64,24 @@ public class PlayerController : MonoBehaviour
         {
             isOnGround = true;
         }
+
+
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            //Вызываем метод GetDamage() компонента Health
+            //Отталкиваем игрока в противоположную сторону
+            //Запускаем таймер на временную неуязвимость (0.3 - 0.5 секунды)
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Ingredient"))
+        {
+            //Добавляем в инвентарь игрока полученный ингредиент
+            Debug.Log("Trigger: " + collision.name);
+            Destroy(collision.gameObject);
+            
+        }
     }
 }
