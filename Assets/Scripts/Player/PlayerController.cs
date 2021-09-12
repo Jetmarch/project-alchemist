@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     public bool isOnGround;
     public bool dashIsReady;
     public float dashCooldown;
+    public float maxPlayerSpeed;
 
     private Rigidbody2D playerRb;
     private Health playerHealth;
@@ -31,6 +32,8 @@ public class PlayerController : MonoBehaviour
         Dash();
 
         FlipPlayerSpriteOnInput();
+
+        LimitPlayerSpeed();
     }
 
     void MovePlayer()
@@ -81,6 +84,14 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetAxis("Horizontal") < 0.0f)
         {
             playerSprite.flipX = true;
+        }
+    }
+
+    void LimitPlayerSpeed()
+    {
+        if (playerRb.velocity.magnitude > maxPlayerSpeed)
+        {
+            playerRb.velocity = Vector3.ClampMagnitude(playerRb.velocity, maxPlayerSpeed);
         }
     }
 
