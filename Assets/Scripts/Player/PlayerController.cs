@@ -6,18 +6,21 @@ public class PlayerController : MonoBehaviour
 {
     public float speed;
     public float jumpForce;
+    public float dashForse;
     public bool isOnGround;
     public bool dashIsReady;
     public float dashCooldown;
 
     private Rigidbody2D playerRb;
     private Health playerHealth;
+    private SpriteRenderer playerSprite;
     // Start is called before the first frame update
     void Start()
     {
         dashIsReady = true;
         playerRb = GetComponent<Rigidbody2D>();
         playerHealth = GetComponent<Health>();
+        playerSprite = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -26,6 +29,8 @@ public class PlayerController : MonoBehaviour
         MovePlayer();
         Jump();
         Dash();
+
+        FlipPlayerSpriteOnInput();
     }
 
     void MovePlayer()
@@ -50,9 +55,32 @@ public class PlayerController : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.LeftShift) && dashIsReady)
         {
-            Debug.Log("Dash!");
+            if(playerSprite.flipX)
+            {
+                //playerRb.AddForce(Vector2.left * dashForse, ForceMode2D.Impulse);
+                //transform.Translate(Vector2.left * dashForse * Time.deltaTime);
+                playerRb.velocity = Vector2.left * dashForse;
+            }
+            else
+            {
+                //playerRb.AddForce(Vector2.right * dashForse, ForceMode2D.Impulse);
+                //transform.Translate(Vector2.right * dashForse * Time.deltaTime);
+                playerRb.velocity = Vector2.right * dashForse;
+            }
             dashIsReady = false;
             StartCoroutine(DashCooldown());
+        }
+    }
+
+    void FlipPlayerSpriteOnInput()
+    {
+        if (Input.GetAxis("Horizontal") > 0.0f)
+        {
+            playerSprite.flipX = false;
+        }
+        else if (Input.GetAxis("Horizontal") < 0.0f)
+        {
+            playerSprite.flipX = true;
         }
     }
 

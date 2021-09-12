@@ -4,10 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Floor
   - Ingredient
-  - Enemy
   - DangerObstacle
+  - Floor
+  - Enemy
   layers:
   - Default
   - TransparentFX
