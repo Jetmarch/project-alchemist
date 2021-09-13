@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed;
-    public float jumpForce;
-    public float dashForse;
-    public bool isOnGround;
-    public bool dashIsReady;
-    public float dashCooldown;
-    public float maxPlayerSpeed;
+    [SerializeField] private float speed;
+    [SerializeField] private float jumpForce;
+    [SerializeField] private float dashForse;
+    [SerializeField] private bool isOnGround;
+    [SerializeField] private bool dashIsReady;
+    [SerializeField] private float dashCooldown;
+    [SerializeField] private float maxPlayerSpeed;
 
     private Rigidbody2D playerRb;
     private Health playerHealth;
@@ -26,14 +26,14 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        MovePlayer();
-        Jump();
-        Dash();
-
+    { 
         FlipPlayerSpriteOnInput();
 
         LimitPlayerSpeed();
+
+        MovePlayer();
+        Jump();
+        Dash();
     }
 
     void MovePlayer()
@@ -133,7 +133,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("DangerObstacle collided with player");
             playerHealth.GetDamage(5);
             Vector2 throwAwayVector = transform.position - collision.transform.position;
-            playerRb.AddForce(throwAwayVector * 200, ForceMode2D.Impulse);
+            playerRb.AddForce(throwAwayVector * 100, ForceMode2D.Impulse);
         }
     }
 
