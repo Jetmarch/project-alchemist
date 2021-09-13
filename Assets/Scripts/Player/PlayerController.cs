@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool dashIsReady;
     [SerializeField] private float dashCooldown;
     [SerializeField] private float maxPlayerSpeed;
+    [SerializeField] private int maxPlayerJumps;
+    [SerializeField] private int currentPlayerJumps;
 
     private Rigidbody2D playerRb;
     private Health playerHealth;
@@ -19,6 +21,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         dashIsReady = true;
+        currentPlayerJumps = maxPlayerJumps;
         playerRb = GetComponent<Rigidbody2D>();
         playerHealth = GetComponent<Health>();
         playerSprite = GetComponent<SpriteRenderer>();
@@ -47,10 +50,11 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
-        if(Input.GetKeyDown(KeyCode.Space) && isOnGround)
+        if(Input.GetKeyDown(KeyCode.Space) && (isOnGround || currentPlayerJumps > 0))
         {
             playerRb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             isOnGround = false;
+            currentPlayerJumps--;
         }
     }
 
@@ -60,15 +64,13 @@ public class PlayerController : MonoBehaviour
         {
             if(playerSprite.flipX)
             {
-                //playerRb.AddForce(Vector2.left * dashForse, ForceMode2D.Impulse);
-                //transform.Translate(Vector2.left * dashForse * Time.deltaTime);
-                playerRb.velocity = Vector2.left * dashForse;
+                playerRb.AddForce(Vector2.left * dashForse, ForceMode2D.Impulse);
+                //playerRb.velocity = Vector2.left * dashForse;
             }
             else
             {
-                //playerRb.AddForce(Vector2.right * dashForse, ForceMode2D.Impulse);
-                //transform.Translate(Vector2.right * dashForse * Time.deltaTime);
-                playerRb.velocity = Vector2.right * dashForse;
+                playerRb.AddForce(Vector2.right * dashForse, ForceMode2D.Impulse);
+                //playerRb.velocity = Vector2.right * dashForse;
             }
             dashIsReady = false;
             StartCoroutine(DashCooldown());
@@ -106,6 +108,7 @@ public class PlayerController : MonoBehaviour
         if(collision.gameObject.CompareTag("Floor"))
         {
             isOnGround = true;
+            currentPlayerJumps = maxPlayerJumps;
         }
 
 
@@ -133,7 +136,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("DangerObstacle collided with player");
             playerHealth.GetDamage(5);
             Vector2 throwAwayVector = transform.position - collision.transform.position;
-            playerRb.AddForce(throwAwayVector * 100, ForceMode2D.Impulse);
+            playerRb.AddForce(throwAwayVector * 1000, ForceMode2D.Impulse);
         }
     }
 
