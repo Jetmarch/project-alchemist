@@ -8,6 +8,7 @@ TagManager:
   - DangerObstacle
   - Floor
   - Enemy
+  - FloorSensor
   layers:
   - Default
   - TransparentFX

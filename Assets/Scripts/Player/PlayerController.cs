@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D playerRb;
     private Health playerHealth;
     private SpriteRenderer playerSprite;
+    private InventoryManager inventory;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour
         playerRb = GetComponent<Rigidbody2D>();
         playerHealth = GetComponent<Health>();
         playerSprite = GetComponent<SpriteRenderer>();
+        inventory = GameObject.Find("Inventory").GetComponent<InventoryManager>();
     }
 
     // Update is called once per frame
@@ -37,6 +39,7 @@ public class PlayerController : MonoBehaviour
         MovePlayer();
         Jump();
         Dash();
+        ShowInvetoryDebug();
     }
 
     void MovePlayer()
@@ -118,25 +121,36 @@ public class PlayerController : MonoBehaviour
             //Отталкиваем игрока в противоположную сторону
             //Запускаем таймер на временную неуязвимость (0.3 - 0.5 секунды)
         }
-    }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Ingredient"))
-        {
-            //Добавляем в инвентарь игрока полученный ингредиент
-            Debug.Log("Trigger: " + collision.name);
-            Destroy(collision.gameObject);
-            
-        }
-
-        if(collision.CompareTag("DangerObstacle"))
+        if (collision.gameObject.CompareTag("DangerObstacle"))
         {
             //TODO: Перенести урон и силу отталкивания в отдельный объект
             Debug.Log("DangerObstacle collided with player");
             playerHealth.GetDamage(5);
             Vector2 throwAwayVector = transform.position - collision.transform.position;
             playerRb.AddForce(throwAwayVector * 1000, ForceMode2D.Impulse);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Ingredient"))
+        {
+            var item = collision.GetComponent<Item>().item;
+            //Добавляем в инвентарь игрока полученный ингредиент
+            inventory.AddItem(item);
+            Debug.Log("Item was: " + collision.GetComponent<Item>().item.itemName);
+
+            Destroy(collision.gameObject);
+            
+        }
+    }
+
+    private void ShowInvetoryDebug()
+    {
+        if(Input.GetKeyDown(KeyCode.B))
+        {
+            inventory.ShowItems();
         }
     }
 
