@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header ("Movement")]
     [SerializeField] private float speed;
     [SerializeField] private float jumpForce;
     [SerializeField] private float dashForse;
     [SerializeField] private bool isOnGround;
+    [SerializeField] private bool isDashActive;
     [SerializeField] private bool dashIsReady;
     [SerializeField] private float dashCooldown;
+    [SerializeField] private float dashDuration;
+    [SerializeField] private float dashMaxPlayerSpeed;
     [SerializeField] private float maxPlayerSpeed;
     [SerializeField] private int maxPlayerJumps;
     [SerializeField] private int currentPlayerJumps;
@@ -67,16 +71,33 @@ public class PlayerController : MonoBehaviour
         {
             if(playerSprite.flipX)
             {
-                playerRb.AddForce(Vector2.left * dashForse, ForceMode2D.Impulse);
+                StartCoroutine(Dashing(Vector2.left));
                 //playerRb.velocity = Vector2.left * dashForse;
             }
             else
             {
-                playerRb.AddForce(Vector2.right * dashForse, ForceMode2D.Impulse);
+                StartCoroutine(Dashing(Vector2.right));
                 //playerRb.velocity = Vector2.right * dashForse;
             }
-            dashIsReady = false;
+            
             StartCoroutine(DashCooldown());
+        }
+    }
+
+    IEnumerator Dashing(Vector2 side)
+    {
+        float timeLeftForDash = dashDuration;
+        isDashActive = true;
+        while (isDashActive)
+        {
+            playerRb.AddForce(side * dashForse, ForceMode2D.Impulse);
+            yield return new WaitForFixedUpdate();
+            timeLeftForDash -= Time.fixedDeltaTime;
+
+            if(timeLeftForDash <= 0)
+            {
+                isDashActive = false;
+            }
         }
     }
 
@@ -94,14 +115,25 @@ public class PlayerController : MonoBehaviour
 
     void LimitPlayerSpeed()
     {
-        if (playerRb.velocity.magnitude > maxPlayerSpeed)
+        if (isDashActive)
         {
-            playerRb.velocity = Vector3.ClampMagnitude(playerRb.velocity, maxPlayerSpeed);
+            if (playerRb.velocity.magnitude > dashMaxPlayerSpeed)
+            {
+                playerRb.velocity = Vector3.ClampMagnitude(playerRb.velocity, dashMaxPlayerSpeed);
+            }
+        }
+        else
+        {
+            if (playerRb.velocity.magnitude > maxPlayerSpeed)
+            {
+                playerRb.velocity = Vector3.ClampMagnitude(playerRb.velocity, maxPlayerSpeed);
+            }
         }
     }
 
     IEnumerator DashCooldown()
     {
+        dashIsReady = false;
         yield return new WaitForSeconds(dashCooldown);
         dashIsReady = true;
     }
