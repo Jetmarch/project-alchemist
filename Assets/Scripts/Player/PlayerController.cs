@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     [Header ("Movement")]
     [SerializeField] private float speed;
     [SerializeField] private float jumpForce;
+    [SerializeField] private float fallMultiplier;
     [SerializeField] private float dashForse;
     [SerializeField] private bool isOnGround;
     [SerializeField] private bool isDashActive;
@@ -35,15 +36,14 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    { 
+    {
         FlipPlayerSpriteOnInput();
-
-        LimitPlayerSpeed();
-
         MovePlayer();
         Jump();
         Dash();
         ShowInvetoryDebug();
+        IncreaseFallSpeed();
+        LimitPlayerSpeed();
     }
 
     void MovePlayer()
@@ -62,6 +62,16 @@ public class PlayerController : MonoBehaviour
             playerRb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             isOnGround = false;
             currentPlayerJumps--;
+        }
+    }
+
+    //Взял этот метод из видео:
+    //https://www.youtube.com/watch?v=7KiK0Aqtmzc
+    void IncreaseFallSpeed()
+    {
+        if(playerRb.velocity.y < 0)
+        {
+            playerRb.velocity += Vector2.up * Physics2D.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
         }
     }
 
