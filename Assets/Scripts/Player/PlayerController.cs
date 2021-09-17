@@ -19,10 +19,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int maxPlayerJumps;
     [SerializeField] private int currentPlayerJumps;
 
+    [Header ("Inventory")]
+    [SerializeField] private Inventory inventory;
+    [SerializeField] private InventoryUI inventoryUI;
+
     private Rigidbody2D playerRb;
     private Health playerHealth;
     private SpriteRenderer playerSprite;
-    private InventoryManager inventory;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +35,9 @@ public class PlayerController : MonoBehaviour
         playerRb = GetComponent<Rigidbody2D>();
         playerHealth = GetComponent<Health>();
         playerSprite = GetComponent<SpriteRenderer>();
-        inventory = GameObject.Find("Inventory").GetComponent<InventoryManager>();
+        inventory = new Inventory(UseItem);
+        inventoryUI.SetInventory(inventory);
+        inventoryUI.SetPlayer(this);
     }
 
     // Update is called once per frame
@@ -41,9 +47,20 @@ public class PlayerController : MonoBehaviour
         MovePlayer();
         Jump();
         Dash();
-        ShowInvetoryDebug();
         IncreaseFallSpeed();
         LimitPlayerSpeed();
+
+        if(Input.GetKeyDown(KeyCode.B))
+        {
+            ItemWorldSpawner.SpawnItem(transform.position + new Vector3(2.0f, 0.0f),
+                new Item() { m_name = "Test", type = ItemType.Tile, sprite = AssetManager.Instance.GetSpriteForItem(ItemType.Tile) });
+        }
+    }
+
+    void UseItem(Item item)
+    {
+        Debug.Log("Item used: " + item.m_name);
+        inventory.RemoveItem(item);
     }
 
     void MovePlayer()
@@ -167,7 +184,6 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("DangerObstacle"))
         {
             //TODO: Перенести урон и силу отталкивания в отдельный объект
-            Debug.Log("DangerObstacle collided with player");
             playerHealth.GetDamage(5);
             Vector2 throwAwayVector = transform.position - collision.transform.position;
             playerRb.AddForce(throwAwayVector * 1000, ForceMode2D.Impulse);
@@ -178,23 +194,17 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.CompareTag("Ingredient"))
         {
-            var item = collision.GetComponent<Item>().item;
+            var item = collision.GetComponent<ItemWorld>();
             //Добавляем в инвентарь игрока полученный ингредиент
-            inventory.AddItem(item);
-            Debug.Log("Item was: " + collision.GetComponent<Item>().item.itemName);
+            inventory.AddItem(item.item);
 
-            Destroy(collision.gameObject);
-            
+            item.DestroySelf();
         }
     }
 
-    private void ShowInvetoryDebug()
+    public Vector3 GetPosition()
     {
-        if(Input.GetKeyDown(KeyCode.B))
-        {
-            inventory.ShowItems();
-        }
+        return transform.position;
     }
-
    
 }
