@@ -18,9 +18,9 @@ public class AssetManager : MonoBehaviour
 
     public Sprite GetSpriteForItem(ItemType type)
     {
-        if (type == ItemType.Knob)
+        if (type == ItemType.Ingredient)
             return knob;
-        if (type == ItemType.Tile)
+        if (type == ItemType.Potion)
             return tile;
 
         return null;

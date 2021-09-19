@@ -48,7 +48,8 @@ public class InventoryUI : MonoBehaviour
             var newInventoryItem = Instantiate(itemTemplate, itemContainer).GetComponent<RectTransform>();
             newInventoryItem.anchoredPosition = new Vector2(x * size, 0);
             newInventoryItem.GetComponent<Image>().sprite = item.sprite;
-            newInventoryItem.GetComponent<Button>().onClick.AddListener(() => inventory.UseItem(item));
+            //newInventoryItem.GetComponent<Button>().onClick.AddListener(() => inventory.UseItem(item));
+            newInventoryItem.GetComponent<ItemUIHolder>().item = item;
             newInventoryItem.gameObject.SetActive(true);
 
             x++;

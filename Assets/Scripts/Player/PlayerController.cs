@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.B))
         {
             ItemWorldSpawner.SpawnItem(transform.position + new Vector3(2.0f, 0.0f),
-                new Item() { m_name = "Test", type = ItemType.Tile, sprite = AssetManager.Instance.GetSpriteForItem(ItemType.Tile) });
+                new Item() { m_name = "Test", type = ItemType.Ingredient, sprite = AssetManager.Instance.GetSpriteForItem(ItemType.Ingredient) });
         }
     }
 

@@ -14,6 +14,6 @@ public class Item
 
 public enum ItemType
 {
-    Knob,
-    Tile
+    Ingredient,
+    Potion
 }
