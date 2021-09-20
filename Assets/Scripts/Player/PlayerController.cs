@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int currentPlayerJumps;
 
     [Header ("Inventory")]
-    [SerializeField] private Inventory inventory;
+    public Inventory inventory;
     [SerializeField] private InventoryUI inventoryUI;
 
     private Rigidbody2D playerRb;

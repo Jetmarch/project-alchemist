@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Boiler : MonoBehaviour
 {
-    List<Item> currentItemsForBoiling;
+    [SerializeField] private List<Item> currentItemsForBoiling;
 
     private void Awake()
     {
@@ -31,6 +31,15 @@ public class Boiler : MonoBehaviour
     /// </summary>
     public void Boiling()
     {
+        Debug.Log("Boiling...");
+    }
 
+    public void ClearBoiler()
+    {
+        foreach(var item in currentItemsForBoiling)
+        {
+            GameObject.Find("Player").GetComponent<PlayerController>().inventory.AddItem(item);
+        }
+        currentItemsForBoiling.Clear();
     }
 }
