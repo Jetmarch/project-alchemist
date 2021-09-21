@@ -15,13 +15,13 @@ public class ItemDrag : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
+        startPosition = transform.position;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
         canvasGroup.alpha = 0.6f;
         canvasGroup.blocksRaycasts = false;
-        startPosition = transform.position;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -38,12 +38,15 @@ public class ItemDrag : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         {
             if (obj.CompareTag("Boiler")) return;
         }
-
-        transform.position = startPosition;
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
         //Debug.Log("Pointer down" + eventData.button);
+    }
+
+    public void ReturnToInventoryPosition()
+    {
+        transform.position = startPosition;
     }
 }
