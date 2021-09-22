@@ -9,7 +9,8 @@ public class ItemWorld : MonoBehaviour
 
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();        
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        SetItem(item);
     }
 
     public void SetItem(Item item)

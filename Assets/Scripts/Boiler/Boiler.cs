@@ -5,6 +5,8 @@ using UnityEngine;
 public class Boiler : MonoBehaviour
 {
     [SerializeField] private List<Item> currentItemsForBoiling;
+    [SerializeField] private List<AlchemyRecipe> alchemyRecipes;
+    
 
     private void Awake()
     {
@@ -31,7 +33,22 @@ public class Boiler : MonoBehaviour
     /// </summary>
     public void Boiling()
     {
-        Debug.Log("Boiling...");
+        foreach(var recipe in alchemyRecipes)
+        {
+            List<Item> result = recipe.Craft(currentItemsForBoiling);
+            if(result != null)
+            {
+                currentItemsForBoiling.Clear();
+                foreach(var item in result)
+                {
+                    GameObject.Find("Player").GetComponent<PlayerController>().inventory.AddItem(item);
+                    Debug.Log($"Crafted: {item.m_name}!");
+                }
+                return;
+            }
+        }
+
+        Debug.Log("Nothing to craft with this ingredients");
     }
 
     public void ClearBoiler()

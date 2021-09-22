@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public class Item 
+[CreateAssetMenu]
+public class Item : ScriptableObject
 {
     public string m_name;
     public string description;
