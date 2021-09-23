@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_name: Potion of minor health
   description: This must heals player
-  sprite: {fileID: 21300016, guid: 300ea1a5869382b43bf6149aba92c4db, type: 3}
+  sprite: {fileID: 4129085186536377779, guid: db0088dc09a2c0340916dd0d0ccf714f, type: 3}
   type: 1

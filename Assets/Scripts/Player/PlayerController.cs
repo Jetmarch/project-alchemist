@@ -70,6 +70,7 @@ public class PlayerController : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Space) && (isOnGround || currentPlayerJumps > 0))
         {
+            playerRb.velocity = Vector2.zero;
             playerRb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             isOnGround = false;
             currentPlayerJumps--;

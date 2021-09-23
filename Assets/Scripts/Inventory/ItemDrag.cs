@@ -38,6 +38,8 @@ public class ItemDrag : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         {
             if (obj.CompareTag("Boiler")) return;
         }
+
+        ReturnToInventoryPosition();
     }
 
     public void OnPointerDown(PointerEventData eventData)

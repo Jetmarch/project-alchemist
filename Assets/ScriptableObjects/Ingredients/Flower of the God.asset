@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_name: Flower of the God
   description: Test object
-  sprite: {fileID: 21300002, guid: 7706d4b3f7d8d2e42b82d09010a105ec, type: 3}
+  sprite: {fileID: -5034703955856199138, guid: db0088dc09a2c0340916dd0d0ccf714f, type: 3}
   type: 0
