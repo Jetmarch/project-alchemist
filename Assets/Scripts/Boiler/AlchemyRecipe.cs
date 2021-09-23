@@ -13,9 +13,16 @@ public class AlchemyRecipe : ScriptableObject
     {
         //Ќаходим различи€ в листах с материалами
         //≈сли есть хоть одно, то ничего не возвращаем
-        if(materials.Except(materialsForCraft).Any())
+        foreach(var item in materials)
         {
-            return null;
+            foreach(var itemForCraft in materialsForCraft)
+            {
+                if(itemForCraft.m_name != item.m_name || itemForCraft.type != item.type)
+                {
+                    Debug.Log($"Item {itemForCraft.m_name} doesn't fits for that alchemy recipe");
+                    return null;
+                }
+            }
         }
 
         return result;
