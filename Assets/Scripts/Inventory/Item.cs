@@ -10,6 +10,19 @@ public class Item : ScriptableObject
     public string description;
     public Sprite sprite;
     public ItemType type;
+    public ItemEffect itemEffect;
+
+
+    public delegate void UseHandler(GameObject gameObject, Item item);
+    public event UseHandler OnUse;
+
+    public void Use(GameObject gameObject, Item item)
+    {
+        if(OnUse != null)
+        {
+            OnUse.Invoke(gameObject, item);
+        }
+    }
 }
 
 public enum ItemType

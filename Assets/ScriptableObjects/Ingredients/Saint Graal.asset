@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_name: Saint Graal
   description: Test object
-  sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  sprite: {fileID: 4129085186536377779, guid: db0088dc09a2c0340916dd0d0ccf714f, type: 3}
   type: 1

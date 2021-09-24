@@ -201,5 +201,15 @@ public class PlayerController : MonoBehaviour
     {
         return transform.position;
     }
+
+    public void AddItemToInventory(Item item)
+    {
+        inventory.AddItem(item);
+    }
+
+    public void RemoveItemFromInventory(Item item)
+    {
+        inventory.AddItem(item);
+    }
    
 }
