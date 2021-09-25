@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
         playerRb = GetComponent<Rigidbody2D>();
         playerHealth = GetComponent<Health>();
         playerSprite = GetComponent<SpriteRenderer>();
-        inventory = new Inventory(UseItem);
+        inventory = new Inventory();
         inventoryUI.SetInventory(inventory);
         inventoryUI.SetPlayer(this);
     }
@@ -49,12 +49,6 @@ public class PlayerController : MonoBehaviour
         Dash();
         IncreaseFallSpeed();
         LimitPlayerSpeed();
-    }
-
-    void UseItem(Item item)
-    {
-        Debug.Log("Item used: " + item.m_name);
-        inventory.RemoveItem(item);
     }
 
     void MovePlayer()
@@ -204,12 +198,34 @@ public class PlayerController : MonoBehaviour
 
     public void AddItemToInventory(Item item)
     {
+        if (item == null)
+        {
+            return;
+        }
+
         inventory.AddItem(item);
+        item.StartUse(this.gameObject, item);
     }
 
     public void RemoveItemFromInventory(Item item)
     {
-        inventory.AddItem(item);
+        if (item == null)
+        {
+            return;
+        }
+
+        inventory.RemoveItem(item);
+        item.StopUse(this.gameObject, item);
     }
-   
+
+    public void UseItem(Item item)
+    {
+        if(item == null)
+        {
+            return;
+        }
+
+        inventory.UseItem(this.gameObject, item);
+        RemoveItemFromInventory(item);
+    }
 }

@@ -8,12 +8,10 @@ public class Inventory
 {
     public List<Item> items;
     public event EventHandler OnItemsChange;
-    private Action<Item> useItemAction;
 
-    public Inventory(Action<Item> useItemAction)
+    public Inventory()
     {
         items = new List<Item>();
-        this.useItemAction = useItemAction;
     }
 
     public void AddItem(Item item)
@@ -28,9 +26,9 @@ public class Inventory
         OnItemsChange?.Invoke(this, EventArgs.Empty);
     }
 
-    public void UseItem(Item item)
+    public void UseItem(GameObject player, Item item)
     {
-        useItemAction(item);
+        item.Use(player, item);
     }
 
     public List<Item> GetAllItems()

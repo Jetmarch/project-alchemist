@@ -45,10 +45,15 @@ public class InventoryUI : MonoBehaviour
         float size = 5.5f;
         foreach(var item in inventory.GetAllItems())
         {
+            if(item == null)
+            {
+                Debug.Log("Some item in inventory is null");
+                return;
+            }
             var newInventoryItem = Instantiate(itemTemplate, itemContainer).GetComponent<RectTransform>();
             newInventoryItem.anchoredPosition = new Vector2(x * size, 0);
             newInventoryItem.GetComponent<Image>().sprite = item.sprite;
-            //newInventoryItem.GetComponent<Button>().onClick.AddListener(() => inventory.UseItem(item));
+            newInventoryItem.GetComponent<Button>().onClick.AddListener(() => player.UseItem(item));
             newInventoryItem.GetComponent<ItemUIHolder>().item = item;
             newInventoryItem.gameObject.SetActive(true);
 

@@ -14,13 +14,35 @@ public class Item : ScriptableObject
 
 
     public delegate void UseHandler(GameObject gameObject, Item item);
-    public event UseHandler OnUse;
+    public delegate void EffectDelegate(GameObject gameObject, Item item);
+    public delegate void EffectDelegateUpdate(GameObject gameObject, Item item, float deltaTime);
+
+    public event EffectDelegate onStartUsing;
+    public event EffectDelegate onStopUsing;
+    public event EffectDelegateUpdate onUpdate;
+    public event UseHandler onUse;
 
     public void Use(GameObject gameObject, Item item)
     {
-        if(OnUse != null)
+        if(onUse != null)
         {
-            OnUse.Invoke(gameObject, item);
+            onUse.Invoke(gameObject, item);
+        }
+    }
+
+    public void StartUse(GameObject gameObject, Item item)
+    {
+        if(onStartUsing != null)
+        {
+            onStartUsing.Invoke(gameObject, item);
+        }
+    }
+
+    public void StopUse(GameObject gameObject, Item item)
+    {
+        if (onStopUsing != null)
+        {
+            onStopUsing.Invoke(gameObject, item);
         }
     }
 }

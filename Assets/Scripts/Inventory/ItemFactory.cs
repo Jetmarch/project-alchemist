@@ -16,29 +16,44 @@ public class ItemFactory : MonoBehaviour
 
     public Item CreateIngredientFlowerOfTheGod()
     {
-        Item item = FindItem("Flower of the God");
+        Item item = FindAndInstantiateItem("Flower of the God");
 
         if (item != null)
         {
-            Debug.Log($"Created item {item.name}");
-            item.OnUse += EffectManager.OnUse_TestItem;
+            item.onUse += EffectManager.OnUse_TestItem;
             return item;
         }
 
         return null;
     }
 
-    private Item FindItem(string itemName)
+    public Item CreateMagicItem()
+    {
+        Item item = FindAndInstantiateItem("Saint Graal");
+        
+        if(item != null)
+        {
+            item.onUse += EffectManager.OnUse_TestItem;
+            item.onStartUsing += EffectManager.OnStartUse_TestItem;
+            item.onStopUsing += EffectManager.OnStopUse_TestItem;
+            return item;
+        }
+
+        return null;
+    }
+
+    private Item FindAndInstantiateItem(string itemName)
     {
         Item foundedItem;
         foreach (var item in allGameItems)
         {
             if (item.m_name == itemName)
             {
-                foundedItem = item;
+                foundedItem = Instantiate(item);
                 return foundedItem;
             }
         }
+
         return null;
     }
 }

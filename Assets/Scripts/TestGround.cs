@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TestGround : MonoBehaviour
@@ -15,12 +16,24 @@ public class TestGround : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.B))
         {
-            player.AddItemToInventory(ItemFactory.instance.CreateIngredientFlowerOfTheGod());
+            player.AddItemToInventory(ItemFactory.instance.CreateMagicItem());
         }
 
         if(Input.GetKeyDown(KeyCode.E))
         {
-            player.inventory.items[0].Use(this.gameObject, player.inventory.items[0]);
+            if (player.inventory.items.ElementAtOrDefault(1) != null)
+            {
+                Debug.Log(player.inventory.items[0]);
+                player.inventory.items[0].Use(this.gameObject, player.inventory.items[0]);
+            }
+        }
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            if (player.inventory.items.ElementAtOrDefault(1) != null)
+            {
+                Debug.Log(player.inventory.items[0]);
+                player.inventory.items[1].Use(this.gameObject, player.inventory.items[0]);
+            }
         }
     }
 }
