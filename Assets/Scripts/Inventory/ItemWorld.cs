@@ -15,7 +15,6 @@ public class ItemWorld : MonoBehaviour
 
     public void SetItem(Item item)
     {
-        Debug.Log("SetItem item sprite" + item.sprite);
         this.item = item;
 
         if (spriteRenderer != null)

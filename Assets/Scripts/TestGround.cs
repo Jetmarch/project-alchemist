@@ -29,7 +29,7 @@ public class TestGround : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            GameObject currentThrowingObject = ItemWorldSpawner.SpawnItem(throwObjectSpawn.position, testItemForThrow);
+            GameObject currentThrowingObject = ItemWorldSpawner.SpawnThrowableItem(throwObjectSpawn.position, testItemForThrow);
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 _velocity = (mousePosition - (Vector2)throwObjectSpawn.position) * powerOfThrow;
 
