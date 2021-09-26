@@ -23,20 +23,19 @@ public class PlayerController : MonoBehaviour
     public Inventory inventory;
     [SerializeField] private InventoryUI inventoryUI;
 
-    [Header("Throw")]
-    [SerializeField] private bool isThrowing;
-    [SerializeField] private Transform throwObjectSpawn;
-    [SerializeField] private Vector2 dragStartPos;
-    [SerializeField] private float powerOfThrow;
+    [Header("Input")]
+    [SerializeField] private float horizontalInput;
+
     private Rigidbody2D playerRb;
     private Health playerHealth;
     private SpriteRenderer playerSprite;
+
+
     
     // Start is called before the first frame update
     void Start()
     {
         dashIsReady = true;
-        isThrowing = false;
         currentPlayerJumps = maxPlayerJumps;
         playerRb = GetComponent<Rigidbody2D>();
         playerHealth = GetComponent<Health>();
@@ -50,21 +49,31 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         FlipPlayerSpriteOnInput();
-        MovePlayer();
+        GetHorizontalInput();
         Jump();
         Dash();
+        
+    }
+
+    void FixedUpdate()
+    {
+        MovePlayer();
         IncreaseFallSpeed();
+
         LimitPlayerSpeed();
     }
 
 
     void MovePlayer()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-
         //transform.Translate(Vector3.right * horizontalInput * speed * Time.deltaTime);
 
         playerRb.AddForce(Vector3.right * horizontalInput * speed);
+    }
+
+    void GetHorizontalInput()
+    {
+        horizontalInput = Input.GetAxis("Horizontal");
     }
 
     void Jump()
@@ -238,25 +247,8 @@ public class PlayerController : MonoBehaviour
 
     public void ThrowItem(Item item)
     {
-        isThrowing = true;
+        
     }
 
-    public void Throw()
-    {
-        if(Input.GetMouseButtonDown(0))
-        {
-            dragStartPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        }
-
-        if(Input.GetMouseButtonUp(0))
-        {
-            Vector2 dragEndPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 _velocity = (dragEndPos - dragStartPos) * powerOfThrow;
-
-            playerRb.velocity = _velocity;
-
-            //Вместо применения ускорения на тело игрока, применяем ускорение на тело предмета из инвентаря
-        }
-
-    }
+    
 }
