@@ -23,6 +23,11 @@ public class PlayerController : MonoBehaviour
     public Inventory inventory;
     [SerializeField] private InventoryUI inventoryUI;
 
+    [Header("Throw")]
+    [SerializeField] private bool isThrowing;
+    [SerializeField] private Transform throwObjectSpawn;
+    [SerializeField] private Vector2 dragStartPos;
+    [SerializeField] private float powerOfThrow;
     private Rigidbody2D playerRb;
     private Health playerHealth;
     private SpriteRenderer playerSprite;
@@ -31,6 +36,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         dashIsReady = true;
+        isThrowing = false;
         currentPlayerJumps = maxPlayerJumps;
         playerRb = GetComponent<Rigidbody2D>();
         playerHealth = GetComponent<Health>();
@@ -50,6 +56,7 @@ public class PlayerController : MonoBehaviour
         IncreaseFallSpeed();
         LimitPlayerSpeed();
     }
+
 
     void MovePlayer()
     {
@@ -227,5 +234,29 @@ public class PlayerController : MonoBehaviour
 
         inventory.UseItem(this.gameObject, item);
         RemoveItemFromInventory(item);
+    }
+
+    public void ThrowItem(Item item)
+    {
+        isThrowing = true;
+    }
+
+    public void Throw()
+    {
+        if(Input.GetMouseButtonDown(0))
+        {
+            dragStartPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        }
+
+        if(Input.GetMouseButtonUp(0))
+        {
+            Vector2 dragEndPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 _velocity = (dragEndPos - dragStartPos) * powerOfThrow;
+
+            playerRb.velocity = _velocity;
+
+            //Вместо применения ускорения на тело игрока, применяем ускорение на тело предмета из инвентаря
+        }
+
     }
 }

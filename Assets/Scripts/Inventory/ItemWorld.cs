@@ -7,7 +7,7 @@ public class ItemWorld : MonoBehaviour
     public Item item;
     private SpriteRenderer spriteRenderer;
 
-    private void Awake()
+    private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         SetItem(item);
@@ -15,8 +15,13 @@ public class ItemWorld : MonoBehaviour
 
     public void SetItem(Item item)
     {
+        Debug.Log("SetItem item sprite" + item.sprite);
         this.item = item;
-        spriteRenderer.sprite = item.sprite;
+
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.sprite = item.sprite;
+        }
     }
 
     public void DestroySelf()

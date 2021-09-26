@@ -12,21 +12,30 @@ public class Item : ScriptableObject
     public ItemType type;
     public ItemEffect itemEffect;
 
-
-    public delegate void UseHandler(GameObject gameObject, Item item);
     public delegate void EffectDelegate(GameObject gameObject, Item item);
     public delegate void EffectDelegateUpdate(GameObject gameObject, Item item, float deltaTime);
 
     public event EffectDelegate onStartUsing;
     public event EffectDelegate onStopUsing;
     public event EffectDelegateUpdate onUpdate;
-    public event UseHandler onUse;
+    public event EffectDelegate onUse;
 
     public void Use(GameObject gameObject, Item item)
     {
         if(onUse != null)
         {
             onUse.Invoke(gameObject, item);
+        }
+    }
+
+    public void UseOn(List<GameObject> gameObjects, Item item)
+    {
+        if(onUse != null)
+        {
+            foreach(var obj in gameObjects)
+            {
+                onUse.Invoke(obj, item);
+            }
         }
     }
 

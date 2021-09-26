@@ -7,6 +7,14 @@ public class TestGround : MonoBehaviour
 {
     private PlayerController player;
 
+    [Header("Throw")]
+    [SerializeField] private bool isThrowing;
+    [SerializeField] private Transform throwObjectSpawn;
+    [SerializeField] private Vector2 dragStartPos;
+    [SerializeField] private float powerOfThrow;
+    [SerializeField] private Item testItemForThrow;
+
+
     private void Start()
     {
         player = GetComponent<PlayerController>();
@@ -14,25 +22,20 @@ public class TestGround : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.B))
-        {
-            player.AddItemToInventory(ItemFactory.instance.CreateMagicItem());
-        }
+        Throw();
+    }
 
-        if(Input.GetKeyDown(KeyCode.E))
+    public void Throw()
+    {
+        if (Input.GetMouseButtonDown(0))
         {
-            if (player.inventory.items.ElementAtOrDefault(1) != null)
+            GameObject currentThrowingObject = ItemWorldSpawner.SpawnItem(throwObjectSpawn.position, testItemForThrow);
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 _velocity = (mousePosition - (Vector2)throwObjectSpawn.position) * powerOfThrow;
+
+            if (currentThrowingObject != null)
             {
-                Debug.Log(player.inventory.items[0]);
-                player.inventory.items[0].Use(this.gameObject, player.inventory.items[0]);
-            }
-        }
-        if(Input.GetKeyDown(KeyCode.Q))
-        {
-            if (player.inventory.items.ElementAtOrDefault(1) != null)
-            {
-                Debug.Log(player.inventory.items[0]);
-                player.inventory.items[1].Use(this.gameObject, player.inventory.items[0]);
+                currentThrowingObject.GetComponent<Rigidbody2D>().velocity = _velocity;
             }
         }
     }
