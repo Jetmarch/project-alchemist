@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class ItemDrop : MonoBehaviour, IDropHandler
 {
+    [SerializeField] private Inventory inventory;
     public void OnDrop(PointerEventData eventData)
     {
         //Добавляем предмет в котелок и удаляем из инвентаря игрока
@@ -13,7 +14,7 @@ public class ItemDrop : MonoBehaviour, IDropHandler
             Item item = eventData.pointerDrag.GetComponent<ItemUIHolder>().item;
             if(GetComponent<Boiler>().AddItemForBoiling(item))
             {
-                GameObject.Find("Player").GetComponent<PlayerController>().inventory.RemoveItem(item);
+                inventory.RemoveItem(item);
                 Destroy(eventData.pointerDrag.gameObject);
             }
             else

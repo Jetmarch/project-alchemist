@@ -6,6 +6,7 @@ public class Boiler : MonoBehaviour
 {
     [SerializeField] private List<Item> currentItemsForBoiling;
     [SerializeField] private List<AlchemyRecipe> alchemyRecipes;
+    [SerializeField] private Inventory inventory;
     
 
     private void Awake()
@@ -41,7 +42,7 @@ public class Boiler : MonoBehaviour
                 currentItemsForBoiling.Clear();
                 foreach(var item in result)
                 {
-                    GameObject.Find("Player").GetComponent<PlayerController>().inventory.AddItem(item);
+                    inventory.AddItem(item);
                     Debug.Log($"Crafted: {item.m_name}!");
                 }
                 return;
@@ -55,7 +56,7 @@ public class Boiler : MonoBehaviour
     {
         foreach(var item in currentItemsForBoiling)
         {
-            GameObject.Find("Player").GetComponent<PlayerController>().inventory.AddItem(item);
+            inventory.AddItem(item);
         }
         currentItemsForBoiling.Clear();
     }

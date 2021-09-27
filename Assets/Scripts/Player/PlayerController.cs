@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
@@ -20,8 +21,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int currentPlayerJumps;
 
     [Header ("Inventory")]
-    public Inventory inventory;
-    [SerializeField] private InventoryUI inventoryUI;
+    [SerializeField] private Inventory inventory;
+    [SerializeField] private UnityEvent inventoryChanged;
 
     [Header("Input")]
     [SerializeField] private float horizontalInput;
@@ -30,8 +31,6 @@ public class PlayerController : MonoBehaviour
     private Health playerHealth;
     private SpriteRenderer playerSprite;
 
-
-    
     // Start is called before the first frame update
     void Start()
     {
@@ -40,9 +39,6 @@ public class PlayerController : MonoBehaviour
         playerRb = GetComponent<Rigidbody2D>();
         playerHealth = GetComponent<Health>();
         playerSprite = GetComponent<SpriteRenderer>();
-        inventory = new Inventory();
-        inventoryUI.SetInventory(inventory);
-        inventoryUI.SetPlayer(this);
     }
 
     // Update is called once per frame
@@ -201,7 +197,7 @@ public class PlayerController : MonoBehaviour
         {
             var item = collision.GetComponent<ItemWorld>();
             //Добавляем в инвентарь игрока полученный ингредиент
-            inventory.AddItem(item.item);
+            AddItemToInventory(item.item);
 
             item.DestroySelf();
         }
@@ -214,12 +210,14 @@ public class PlayerController : MonoBehaviour
 
     public void AddItemToInventory(Item item)
     {
+        Debug.Log("Added item to inventory");
         if (item == null)
         {
             return;
         }
 
         inventory.AddItem(item);
+        inventoryChanged.Invoke();
         item.StartUse(this.gameObject, item);
     }
 
@@ -231,6 +229,7 @@ public class PlayerController : MonoBehaviour
         }
 
         inventory.RemoveItem(item);
+        inventoryChanged.Invoke();
         item.StopUse(this.gameObject, item);
     }
 
@@ -241,7 +240,8 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        inventory.UseItem(this.gameObject, item);
+        item.Use(this.gameObject, item);
+        inventoryChanged.Invoke();
         RemoveItemFromInventory(item);
     }
 

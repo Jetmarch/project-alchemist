@@ -7,25 +7,14 @@ public class InventoryUI : MonoBehaviour
 {
     private Transform itemContainer;
     private Transform itemTemplate;
-    private Inventory inventory;
+    [SerializeField] private Inventory inventory;
     private PlayerController player;
 
     private void Awake()
     {
         itemContainer = transform.Find("itemContainer");
         itemTemplate = itemContainer.Find("itemTemplate");
-    }
-
-    public void SetPlayer(PlayerController player)
-    {
-        this.player = player;
-    }
-
-    public void SetInventory(Inventory inventory)
-    {
-        this.inventory = inventory;
-        inventory.OnItemsChange += Inventory_OnItemsChange;
-        RefreshInventoryUI();
+        player = FindObjectOfType<PlayerController>();
     }
 
     private void Inventory_OnItemsChange(object sender, System.EventArgs e)
@@ -59,11 +48,5 @@ public class InventoryUI : MonoBehaviour
 
             x++;
         }
-    }
-
-    private void DropItemFromInventory(Item item)
-    {
-        inventory.RemoveItem(item);
-        ItemWorldSpawner.DropItem(player.GetPosition(), item);
     }
 }
