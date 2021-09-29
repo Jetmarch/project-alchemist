@@ -22,14 +22,11 @@ public class PlayerController : MonoBehaviour
 
     [Header ("Inventory")]
     [SerializeField] private Inventory inventory;
-    [SerializeField] private UnityEvent inventoryChanged;
-
-    [Header("Input")]
-    [SerializeField] private float horizontalInput;
 
     private Rigidbody2D playerRb;
     private Health playerHealth;
     private SpriteRenderer playerSprite;
+    private float horizontalInput;
 
     // Start is called before the first frame update
     void Start()
@@ -197,9 +194,11 @@ public class PlayerController : MonoBehaviour
         {
             var item = collision.GetComponent<ItemWorld>();
             //Добавляем в инвентарь игрока полученный ингредиент
-            AddItemToInventory(item.item);
+            if(AddItemToInventory(item.item))
+            {
+                item.DestroySelf();
+            }
 
-            item.DestroySelf();
         }
     }
 
@@ -208,17 +207,21 @@ public class PlayerController : MonoBehaviour
         return transform.position;
     }
 
-    public void AddItemToInventory(Item item)
+    public bool AddItemToInventory(Item item)
     {
-        Debug.Log("Added item to inventory");
         if (item == null)
         {
-            return;
+            return false;
         }
 
-        inventory.AddItem(item);
-        inventoryChanged.Invoke();
+        bool isItemAdded = inventory.AddItem(item);
+        if(!isItemAdded)
+        {
+            return false;
+        }
+
         item.StartUse(this.gameObject, item);
+        return true;
     }
 
     public void RemoveItemFromInventory(Item item)
@@ -229,7 +232,6 @@ public class PlayerController : MonoBehaviour
         }
 
         inventory.RemoveItem(item);
-        inventoryChanged.Invoke();
         item.StopUse(this.gameObject, item);
     }
 
@@ -241,13 +243,12 @@ public class PlayerController : MonoBehaviour
         }
 
         item.Use(this.gameObject, item);
-        inventoryChanged.Invoke();
         RemoveItemFromInventory(item);
     }
 
     public void ThrowItem(Item item)
     {
-        
+        Debug.Log("Throw item");
     }
 
     

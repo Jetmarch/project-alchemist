@@ -10,6 +10,10 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private Inventory inventory;
     private PlayerController player;
 
+    [Header("Items")]
+    [SerializeField]
+    private int countOfItemsInRow;
+
     private void Awake()
     {
         itemContainer = transform.Find("itemContainer");
@@ -31,7 +35,9 @@ public class InventoryUI : MonoBehaviour
         }
 
         int x = 0;
-        float size = 5.5f;
+        int y = 0;
+        float xSize = 5.5f;
+        float ySize = -40.0f;
         foreach(var item in inventory.GetAllItems())
         {
             if(item == null)
@@ -40,13 +46,18 @@ public class InventoryUI : MonoBehaviour
                 return;
             }
             var newInventoryItem = Instantiate(itemTemplate, itemContainer).GetComponent<RectTransform>();
-            newInventoryItem.anchoredPosition = new Vector2(x * size, 0);
+            newInventoryItem.anchoredPosition = new Vector2(x * xSize, y * ySize);
             newInventoryItem.GetComponent<Image>().sprite = item.sprite;
             newInventoryItem.GetComponent<Button>().onClick.AddListener(() => player.ThrowItem(item));
             newInventoryItem.GetComponent<ItemUIHolder>().item = item;
             newInventoryItem.gameObject.SetActive(true);
 
             x++;
+            if(x >= countOfItemsInRow)
+            {
+                x = 0;
+                y++;
+            }
         }
     }
 }

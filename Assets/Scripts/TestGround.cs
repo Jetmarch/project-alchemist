@@ -22,7 +22,7 @@ public class TestGround : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Throw();
+        //Throw();
     }
 
     public void Throw()

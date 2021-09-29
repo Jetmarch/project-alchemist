@@ -30,7 +30,6 @@ public class Boiler : MonoBehaviour
 
     /// <summary>
     /// Производит варку с текущими предметами из currentItemsForBoiling
-    /// TODO: Придумать способ хранения всех рецептов для варки и их удобной переборки
     /// </summary>
     public void Boiling()
     {
@@ -39,6 +38,8 @@ public class Boiler : MonoBehaviour
             List<Item> result = recipe.Craft(currentItemsForBoiling);
             if(result != null)
             {
+                //Не очищать полностью, а убирать только те, что использовались в крафте
+                //Либо сделать более точный метод Craft у рецепта
                 currentItemsForBoiling.Clear();
                 foreach(var item in result)
                 {
@@ -54,6 +55,7 @@ public class Boiler : MonoBehaviour
 
     public void ClearBoiler()
     {
+        //TODO: Выбрасывать все предметы наружу, если инвентарь уже забит
         foreach(var item in currentItemsForBoiling)
         {
             inventory.AddItem(item);
