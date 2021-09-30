@@ -8,6 +8,7 @@ public class InventoryUI : MonoBehaviour
     private Transform itemContainer;
     private Transform itemTemplate;
     [SerializeField] private Inventory inventory;
+    [SerializeField] private List<ItemUIHolder> itemsUI;
     private PlayerController player;
 
     [Header("Items")]
@@ -26,7 +27,22 @@ public class InventoryUI : MonoBehaviour
         RefreshInventoryUI();
     }
 
-    public void RefreshInventoryUI()
+    private void RefreshInventoryUI()
+    {
+        foreach(var item in itemsUI)
+        {
+            item.ClearSlot();
+        }
+
+        var itemsInInventory = inventory.GetAllItems();
+        for (int i = 0; i < itemsInInventory.Count; i++)
+        {
+            itemsUI[i].SetItem(itemsInInventory[i]);
+        }
+    }
+
+    //TODO: ѕеределать этот метод под начальное создание инвентар€ путЄм автоматического добавлени€ €чеек в UI
+    /*public void RefreshInventoryUI()
     {
         foreach(Transform child in itemContainer)
         {
@@ -59,5 +75,5 @@ public class InventoryUI : MonoBehaviour
                 y++;
             }
         }
-    }
+    }*/
 }

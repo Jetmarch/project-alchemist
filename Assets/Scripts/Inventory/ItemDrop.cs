@@ -15,12 +15,9 @@ public class ItemDrop : MonoBehaviour, IDropHandler
             if(GetComponent<Boiler>().AddItemForBoiling(item))
             {
                 inventory.RemoveItem(item);
-                Destroy(eventData.pointerDrag.gameObject);
             }
-            else
-            {
-                eventData.pointerDrag.GetComponent<ItemDrag>().ReturnToInventoryPosition();
-            }
+
+            eventData.pointerDrag.GetComponent<ItemDrag>().ReturnToInventoryPosition();
         }
     }
 }

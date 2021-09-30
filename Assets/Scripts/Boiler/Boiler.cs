@@ -16,6 +16,10 @@ public class Boiler : MonoBehaviour
 
     public bool AddItemForBoiling(Item item)
     {
+        if(item == null)
+        {
+            return false;
+        }
         //TODO: добавить возможность смешивать не только ингредиенты, но и зелья
         if(item.type == ItemType.Ingredient)
         {
