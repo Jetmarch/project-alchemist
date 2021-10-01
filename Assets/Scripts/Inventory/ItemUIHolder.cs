@@ -7,6 +7,7 @@ public class ItemUIHolder : MonoBehaviour
 {
     public Item item;
     private Image image;
+    [SerializeField] private Image borderImage;
 
     private void Start()
     {
@@ -17,6 +18,11 @@ public class ItemUIHolder : MonoBehaviour
     {
         this.item = item;
         image.sprite = item.sprite;
+    }
+
+    public void SetSelected()
+    {
+        borderImage.color = Color.yellow;
     }
 
     public void ClearSlot()
