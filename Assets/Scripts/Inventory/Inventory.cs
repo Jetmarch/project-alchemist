@@ -3,32 +3,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
-public class Inventory
+[CreateAssetMenu]
+public class Inventory : ScriptableObject
 {
-    public List<Item> items;
-    public event EventHandler OnItemsChange;
+    public List<Item> items = new List<Item>();
+    public GameEvent onInventoryChanged;
+    public int maxItemCount;
 
-    public Inventory()
+    public bool AddItem(Item item)
     {
-        items = new List<Item>();
-    }
+        if(items.Count >= maxItemCount)
+        {
+            return false;
+        }
 
-    public void AddItem(Item item)
-    {
         items.Add(item);
-        OnItemsChange?.Invoke(this, EventArgs.Empty);
+        onInventoryChanged.Raise();
+        return true;
     }
 
     public void RemoveItem(Item item)
     {
-        items.Remove(item);
-        OnItemsChange?.Invoke(this, EventArgs.Empty);
-    }
+        if(items.Count == 0)
+        {
+            return;
+        }
 
-    public void UseItem(GameObject player, Item item)
-    {
-        item.Use(player, item);
+        items.Remove(item);
+        onInventoryChanged.Raise();
     }
 
     public List<Item> GetAllItems()

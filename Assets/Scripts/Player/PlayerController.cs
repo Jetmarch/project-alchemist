@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
@@ -20,13 +21,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int currentPlayerJumps;
 
     [Header ("Inventory")]
-    public Inventory inventory;
-    [SerializeField] private InventoryUI inventoryUI;
+    [SerializeField] private Inventory inventory;
 
     private Rigidbody2D playerRb;
     private Health playerHealth;
     private SpriteRenderer playerSprite;
-    
+    private float horizontalInput;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,29 +36,37 @@ public class PlayerController : MonoBehaviour
         playerRb = GetComponent<Rigidbody2D>();
         playerHealth = GetComponent<Health>();
         playerSprite = GetComponent<SpriteRenderer>();
-        inventory = new Inventory();
-        inventoryUI.SetInventory(inventory);
-        inventoryUI.SetPlayer(this);
     }
 
     // Update is called once per frame
     void Update()
     {
         FlipPlayerSpriteOnInput();
-        MovePlayer();
+        GetHorizontalInput();
         Jump();
         Dash();
+        
+    }
+
+    void FixedUpdate()
+    {
+        MovePlayer();
         IncreaseFallSpeed();
+
         LimitPlayerSpeed();
     }
 
+
     void MovePlayer()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-
         //transform.Translate(Vector3.right * horizontalInput * speed * Time.deltaTime);
 
         playerRb.AddForce(Vector3.right * horizontalInput * speed);
+    }
+
+    void GetHorizontalInput()
+    {
+        horizontalInput = Input.GetAxis("Horizontal");
     }
 
     void Jump()
@@ -185,9 +194,11 @@ public class PlayerController : MonoBehaviour
         {
             var item = collision.GetComponent<ItemWorld>();
             //Добавляем в инвентарь игрока полученный ингредиент
-            inventory.AddItem(item.item);
+            if(AddItemToInventory(item.item))
+            {
+                item.DestroySelf();
+            }
 
-            item.DestroySelf();
         }
     }
 
@@ -196,15 +207,21 @@ public class PlayerController : MonoBehaviour
         return transform.position;
     }
 
-    public void AddItemToInventory(Item item)
+    public bool AddItemToInventory(Item item)
     {
         if (item == null)
         {
-            return;
+            return false;
         }
 
-        inventory.AddItem(item);
+        bool isItemAdded = inventory.AddItem(item);
+        if(!isItemAdded)
+        {
+            return false;
+        }
+
         item.StartUse(this.gameObject, item);
+        return true;
     }
 
     public void RemoveItemFromInventory(Item item)
@@ -225,7 +242,14 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        inventory.UseItem(this.gameObject, item);
+        item.Use(this.gameObject, item);
         RemoveItemFromInventory(item);
     }
+
+    public void ThrowItem(Item item)
+    {
+        Debug.Log("Throw item");
+    }
+
+    
 }

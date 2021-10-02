@@ -36,7 +36,7 @@ public class ItemDrag : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
 
         foreach(var obj in eventData.hovered)
         {
-            if (obj.CompareTag("Boiler")) return;
+            if (obj.CompareTag("Boiler") || obj.CompareTag("ItemSlot")) return;
         }
 
         ReturnToInventoryPosition();

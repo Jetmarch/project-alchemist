@@ -7,33 +7,37 @@ public class InventoryUI : MonoBehaviour
 {
     private Transform itemContainer;
     private Transform itemTemplate;
-    private Inventory inventory;
+    [SerializeField] private Inventory inventory;
+    [SerializeField] private List<ItemUIHolder> itemsUI;
     private PlayerController player;
+
+    [Header("Items")]
+    [SerializeField]
+    private int countOfItemsInRow;
 
     private void Awake()
     {
         itemContainer = transform.Find("itemContainer");
         itemTemplate = itemContainer.Find("itemTemplate");
-    }
-
-    public void SetPlayer(PlayerController player)
-    {
-        this.player = player;
-    }
-
-    public void SetInventory(Inventory inventory)
-    {
-        this.inventory = inventory;
-        inventory.OnItemsChange += Inventory_OnItemsChange;
-        RefreshInventoryUI();
-    }
-
-    private void Inventory_OnItemsChange(object sender, System.EventArgs e)
-    {
-        RefreshInventoryUI();
+        player = FindObjectOfType<PlayerController>();
     }
 
     public void RefreshInventoryUI()
+    {
+        foreach(var item in itemsUI)
+        {
+            item.ClearSlot();
+        }
+
+        var itemsInInventory = inventory.GetAllItems();
+        for (int i = 0; i < itemsInInventory.Count; i++)
+        {
+            itemsUI[i].SetItem(itemsInInventory[i]);
+        }
+    }
+
+    //TODO: ѕеределать этот метод под начальное создание инвентар€ путЄм автоматического добавлени€ €чеек в UI
+    /*public void RefreshInventoryUI()
     {
         foreach(Transform child in itemContainer)
         {
@@ -42,7 +46,9 @@ public class InventoryUI : MonoBehaviour
         }
 
         int x = 0;
-        float size = 5.5f;
+        int y = 0;
+        float xSize = 5.5f;
+        float ySize = -40.0f;
         foreach(var item in inventory.GetAllItems())
         {
             if(item == null)
@@ -51,19 +57,18 @@ public class InventoryUI : MonoBehaviour
                 return;
             }
             var newInventoryItem = Instantiate(itemTemplate, itemContainer).GetComponent<RectTransform>();
-            newInventoryItem.anchoredPosition = new Vector2(x * size, 0);
+            newInventoryItem.anchoredPosition = new Vector2(x * xSize, y * ySize);
             newInventoryItem.GetComponent<Image>().sprite = item.sprite;
-            newInventoryItem.GetComponent<Button>().onClick.AddListener(() => player.UseItem(item));
+            newInventoryItem.GetComponent<Button>().onClick.AddListener(() => player.ThrowItem(item));
             newInventoryItem.GetComponent<ItemUIHolder>().item = item;
             newInventoryItem.gameObject.SetActive(true);
 
             x++;
+            if(x >= countOfItemsInRow)
+            {
+                x = 0;
+                y++;
+            }
         }
-    }
-
-    private void DropItemFromInventory(Item item)
-    {
-        inventory.RemoveItem(item);
-        ItemWorldSpawner.DropItem(player.GetPosition(), item);
-    }
+    }*/
 }

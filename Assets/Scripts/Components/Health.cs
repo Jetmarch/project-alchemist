@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Health : MonoBehaviour
 {
@@ -8,6 +9,10 @@ public class Health : MonoBehaviour
     private float maxHealth;
     [SerializeField]
     private float currentHealth;
+    [SerializeField]
+    private UnityEvent damageEvent;
+    [SerializeField]
+    private UnityEvent deathEvent;
 
     public bool isAlive;
     public float invulnerabilityAfterHitInSeconds = 0.5f;
@@ -35,11 +40,13 @@ public class Health : MonoBehaviour
         }
 
         currentHealth -= amount;
+        damageEvent.Invoke();
         StartCoroutine(TemporaryInvulnerability());
         
         if(currentHealth <= 0)
         {
             isAlive = false;
+            deathEvent.Invoke();
             Debug.Log($"{gameObject.name} is dead!");
         }
     }

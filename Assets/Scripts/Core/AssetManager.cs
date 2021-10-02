@@ -12,6 +12,7 @@ public class AssetManager : MonoBehaviour
     }
 
     public GameObject itemWorldTemplate;
+    public GameObject itemWorldTemplateThrowable;
 
     public Sprite knob;
     public Sprite tile;

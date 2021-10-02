@@ -11,6 +11,10 @@ public class AlchemyRecipe : ScriptableObject
 
     public List<Item> Craft(List<Item> materialsForCraft)
     {
+        if(materialsForCraft.Count == 0)
+        {
+            return null;
+        }
         //Ќаходим различи€ в листах с материалами
         //≈сли есть хоть одно, то ничего не возвращаем
         foreach(var item in materials)
