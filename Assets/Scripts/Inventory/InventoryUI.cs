@@ -22,12 +22,7 @@ public class InventoryUI : MonoBehaviour
         player = FindObjectOfType<PlayerController>();
     }
 
-    private void Inventory_OnItemsChange(object sender, System.EventArgs e)
-    {
-        RefreshInventoryUI();
-    }
-
-    private void RefreshInventoryUI()
+    public void RefreshInventoryUI()
     {
         foreach(var item in itemsUI)
         {

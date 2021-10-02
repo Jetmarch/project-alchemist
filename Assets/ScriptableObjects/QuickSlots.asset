@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bdd9dc9db00d4f42b14c437eebb12dc, type: 3}
   m_Name: QuickSlots
   m_EditorClassIdentifier: 
-  items: []
+  items:
+  - {fileID: 11400000, guid: 60488f913b9a9e9418ced1312b01f935, type: 2}
+  - {fileID: 11400000, guid: 60488f913b9a9e9418ced1312b01f935, type: 2}
+  - {fileID: 11400000, guid: 60488f913b9a9e9418ced1312b01f935, type: 2}
   onInventoryChanged: {fileID: 11400000, guid: 8fbc2326b2e848a45ab7ffb4e5641a90, type: 2}
   maxItemCount: 4

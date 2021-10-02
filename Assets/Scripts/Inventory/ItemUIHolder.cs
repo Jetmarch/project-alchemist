@@ -25,6 +25,11 @@ public class ItemUIHolder : MonoBehaviour
         borderImage.color = Color.yellow;
     }
 
+    public void Unselect()
+    {
+        borderImage.color = Color.white;
+    }
+
     public void ClearSlot()
     {
         this.item = null;

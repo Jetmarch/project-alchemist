@@ -19,8 +19,6 @@ public class InventorySlotHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //TODO: Переделать в более унифицированный вид
-        //TODO: Сделать визуальное обозначение выбранного предмета
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             SetSlotSelected(slot1);
@@ -44,10 +42,15 @@ public class InventorySlotHandler : MonoBehaviour
 
     void SetSlotSelected(ItemUIHolder slot)
     {
-        if (slot == null)
+        if (slot == null || slot.item == null)
         {
             return;
         }
+        if (selectedItem != null)
+        {
+            selectedItem.Unselect();
+        }
+
         selectedItem = slot;
         slot.SetSelected();
         Debug.Log("Active item: " + selectedItem.item.name);

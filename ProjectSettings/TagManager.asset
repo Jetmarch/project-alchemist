@@ -10,6 +10,7 @@ TagManager:
   - Enemy
   - FloorSensor
   - Boiler
+  - ItemSlot
   layers:
   - Default
   - TransparentFX
