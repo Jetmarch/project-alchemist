@@ -1254,7 +1254,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventory: {fileID: 11400000, guid: 8b29220abdcdc314db29e7c5e41194c0, type: 2}
   itemsUI:
-  - {fileID: 0}
+  - {fileID: 211636757}
   - {fileID: 464792014}
   - {fileID: 840264270}
   - {fileID: 346772605}
@@ -5515,7 +5515,7 @@ MonoBehaviour:
   slot2: {fileID: 2068428006}
   slot3: {fileID: 1759999591}
   slot4: {fileID: 215729555}
-  player: {fileID: 1093768799}
+  player: {fileID: 0}
   selectedItem: {fileID: 0}
 --- !u!1 &2085734408 stripped
 GameObject:
@@ -5797,6 +5797,12 @@ PrefabInstance:
       propertyPath: inventory
       value: 
       objectReference: {fileID: 11400000, guid: 8b29220abdcdc314db29e7c5e41194c0,
+        type: 2}
+    - target: {fileID: 3815258823199528707, guid: 0f709eada1253b242ae5db8bf7b2a9cc,
+        type: 3}
+      propertyPath: quickSlots
+      value: 
+      objectReference: {fileID: 11400000, guid: 066123d5ad1d61d44b09a1ebea6d55f0,
         type: 2}
     - target: {fileID: 3815258823199528707, guid: 0f709eada1253b242ae5db8bf7b2a9cc,
         type: 3}
