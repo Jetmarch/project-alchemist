@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1374735438988854315}
   - component: {fileID: 1374735438988854314}
-  - component: {fileID: 1374735438988854317}
+  - component: {fileID: 1690380391736651529}
   m_Layer: 0
   m_Name: CollisionSeonsorLeft
   m_TagString: Untagged
@@ -58,7 +58,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9, y: 0.9}
   m_EdgeRadius: 0
---- !u!114 &1374735438988854317
+--- !u!114 &1690380391736651529
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -67,7 +67,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1374735438988854312}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bdf03e2605567a4c9a29b26be14343e, type: 3}
+  m_Script: {fileID: 11500000, guid: b9b2e71792ced4d4e81a403aea60bd05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isActive: 0
@@ -81,7 +81,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1374735439204756377}
   - component: {fileID: 1374735439204756376}
-  - component: {fileID: 1374735439204756379}
+  - component: {fileID: 1750850981303392469}
   m_Layer: 0
   m_Name: CollisionSeonsorUp
   m_TagString: Untagged
@@ -129,7 +129,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9, y: 0.9}
   m_EdgeRadius: 0
---- !u!114 &1374735439204756379
+--- !u!114 &1750850981303392469
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -138,7 +138,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1374735439204756358}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bdf03e2605567a4c9a29b26be14343e, type: 3}
+  m_Script: {fileID: 11500000, guid: b9b2e71792ced4d4e81a403aea60bd05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isActive: 0
@@ -152,11 +152,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1374735439281494623}
   - component: {fileID: 1374735439281494620}
-  - component: {fileID: 1374735439281494622}
   - component: {fileID: 1374735439281494608}
   - component: {fileID: 1374735439281494609}
+  - component: {fileID: 3840090978352980092}
   m_Layer: 0
-  m_Name: PlayerGrid
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -220,7 +220,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
+  m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -231,26 +232,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1374735439281494622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1374735439281494621}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4154b4cd70029246a9b7ab0748182d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetPosition: {x: 0, y: 0, z: 0}
-  movementSpeed: 2
-  timeForOneTurn: 0.15
-  isMoving: 0
-  upSensor: {fileID: 1374735439204756379}
-  downSensor: {fileID: 1374735440439519930}
-  leftSensor: {fileID: 1374735438988854317}
-  rightSensor: {fileID: 1374735440446939835}
 --- !u!61 &1374735439281494608
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -298,6 +279,26 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &3840090978352980092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1374735439281494621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36ad431b89ec37445a302a01bd04b305, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetPosition: {x: 0, y: 0, z: 0}
+  movementSpeed: 1
+  timeForOneTurn: 0.3
+  isMoving: 0
+  upSensor: {fileID: 1750850981303392469}
+  downSensor: {fileID: 820414183596022218}
+  leftSensor: {fileID: 1690380391736651529}
+  rightSensor: {fileID: 4490415549425817519}
 --- !u!1 &1374735440439519929
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,7 +309,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1374735440439519928}
   - component: {fileID: 1374735440439519931}
-  - component: {fileID: 1374735440439519930}
+  - component: {fileID: 820414183596022218}
   m_Layer: 0
   m_Name: CollisionSeonsorDown
   m_TagString: Untagged
@@ -356,7 +357,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9, y: 0.9}
   m_EdgeRadius: 0
---- !u!114 &1374735440439519930
+--- !u!114 &820414183596022218
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -365,7 +366,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1374735440439519929}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bdf03e2605567a4c9a29b26be14343e, type: 3}
+  m_Script: {fileID: 11500000, guid: b9b2e71792ced4d4e81a403aea60bd05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isActive: 0
@@ -379,7 +380,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1374735440446939833}
   - component: {fileID: 1374735440446939832}
-  - component: {fileID: 1374735440446939835}
+  - component: {fileID: 4490415549425817519}
   m_Layer: 0
   m_Name: CollisionSeonsorRight
   m_TagString: Untagged
@@ -427,7 +428,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9, y: 0.9}
   m_EdgeRadius: 0
---- !u!114 &1374735440446939835
+--- !u!114 &4490415549425817519
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -436,7 +437,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1374735440446939814}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bdf03e2605567a4c9a29b26be14343e, type: 3}
+  m_Script: {fileID: 11500000, guid: b9b2e71792ced4d4e81a403aea60bd05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isActive: 0
