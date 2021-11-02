@@ -5,11 +5,21 @@ using CodeMonkey.Utils;
 
 public class TestScript : MonoBehaviour
 {
-    private Grid<TestGridObject> grid;
+    private Grid<AStartGridObject> grid;
+
+    private AStartGridObject startPoint;
+    private AStartGridObject endPoint;
 
     private void Start()
     {
-        grid = new Grid<TestGridObject>(20, 10, 5f, new Vector3(0, 0), (int x, int y, Grid<TestGridObject> g) => { return new TestGridObject(x, y, g); });
+        grid = new Grid<AStartGridObject>(20, 10, 5f, new Vector3(0, 0), (int x, int y, Grid<AStartGridObject> g) => { return new AStartGridObject(x, y, g); });
+        startPoint = grid.GetGridObject(0, 0);
+        startPoint.gValue = -1;
+        grid.SetGridObject(0, 0, startPoint);
+
+        endPoint = grid.GetGridObject(5, 5);
+        endPoint.gValue = -1;
+        grid.SetGridObject(5, 5, endPoint);
     }
 
     private void Update()
@@ -19,8 +29,10 @@ public class TestScript : MonoBehaviour
             var gridObject = grid.GetGridObject(UtilsClass.GetMouseWorldPosition());
             if(gridObject != null)
             {
-                gridObject.AddValue(5);
+                //gridObject.AddValue(5);
             }
+
+            AStarPath.DoStep(startPoint, startPoint, endPoint);
         }
 
         if(Input.GetMouseButtonDown(1))
@@ -30,30 +42,31 @@ public class TestScript : MonoBehaviour
     }
 }
 
-public class TestGridObject
+public class AStartGridObject
 {
-    private const int MAX_VALUE = 100;
-    private const int MIN_VALUE = 0;
-    private int value;
-    private int x;
-    private int y;
-    private Grid<TestGridObject> grid;
-    public TestGridObject(int x, int y, Grid<TestGridObject> grid)
+    public int x;
+    public int y;
+
+    public int gValue; //Расстояние до начала
+    public int hValue; //Расстояние до конца
+    public int fValue; //Сумма расстояний
+
+    public Grid<AStartGridObject> grid;
+
+    public AStartGridObject(int x, int y, Grid<AStartGridObject> grid)
     {
         this.x = x;
         this.y = y;
         this.grid = grid;
     }
 
-    public void AddValue(int addValue)
+    public int GetFValue()
     {
-        value += addValue;
-        value = Mathf.Clamp(value, MIN_VALUE, MAX_VALUE);
-        grid.TriggerGridObjectChanged(x, y);
+        return gValue + hValue;
     }
 
     public override string ToString()
     {
-        return value.ToString();
+        return $"{gValue} {hValue} \n {GetFValue()}";
     }
 }
