@@ -17,8 +17,9 @@ public class Grid<TGridObject>
     private int height;
     private float cellSize;
     private Vector3 originPosition;
-    private TGridObject[,] gridArray;
+    public TGridObject[,] gridArray;
     private TextMesh[,] debugTextArray;
+    private Func<int, int, Grid<TGridObject>, TGridObject>  createTGridObjectFunc;
 
 
     public Grid(int width, int height, float cellSize, Vector3 originPosition, Func<int, int, Grid<TGridObject>, TGridObject> createTGridObject)
@@ -30,6 +31,7 @@ public class Grid<TGridObject>
 
         gridArray = new TGridObject[width, height];
         debugTextArray = new TextMesh[width, height];
+        this.createTGridObjectFunc = createTGridObject;
 
         for (int x = 0; x < gridArray.GetLength(0); x++)
         {
@@ -97,7 +99,7 @@ public class Grid<TGridObject>
 
     public TGridObject GetGridObject(int x, int y)
     {
-        if (x > width || y > height || x < 0 || y < 0)
+        if (x >= width || y >= height || x < 0 || y < 0)
         {
             return default(TGridObject);
         }
@@ -111,4 +113,6 @@ public class Grid<TGridObject>
         GetXY(worldPosition, out x, out y);
         return GetGridObject(x, y);
     }
+
+   
 }

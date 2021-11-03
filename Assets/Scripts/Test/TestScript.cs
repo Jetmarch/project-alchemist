@@ -12,14 +12,11 @@ public class TestScript : MonoBehaviour
 
     private void Start()
     {
-        grid = new Grid<AStartGridObject>(20, 10, 5f, new Vector3(0, 0), (int x, int y, Grid<AStartGridObject> g) => { return new AStartGridObject(x, y, g); });
+        grid = new Grid<AStartGridObject>(5, 5, 5f, new Vector3(-5, -5), (int x, int y, Grid<AStartGridObject> g) => { return new AStartGridObject(x, y, g); });
         startPoint = grid.GetGridObject(0, 0);
-        startPoint.gValue = -1;
-        grid.SetGridObject(0, 0, startPoint);
 
-        endPoint = grid.GetGridObject(5, 5);
-        endPoint.gValue = -1;
-        grid.SetGridObject(5, 5, endPoint);
+        grid.GetGridObject(1, 1).IsWalkable = false;
+        grid.GetGridObject(1, 0).IsWalkable = false;
     }
 
     private void Update()
@@ -29,15 +26,30 @@ public class TestScript : MonoBehaviour
             var gridObject = grid.GetGridObject(UtilsClass.GetMouseWorldPosition());
             if(gridObject != null)
             {
-                //gridObject.AddValue(5);
+                endPoint = gridObject;
             }
 
-            AStarPath.DoStep(startPoint, startPoint, endPoint);
+            for (int x = 0; x < grid.gridArray.GetLength(0); x++)
+            {
+                for (int y = 0; y < grid.gridArray.GetLength(1); y++)
+                {
+                    grid.gridArray[x, y].GValue = 0;
+                    grid.gridArray[x, y].HValue = 0;
+                    grid.TriggerGridObjectChanged(x, y);
+                }
+            }
+
+            AStarPath.DoStep(startPoint, endPoint);
         }
 
         if(Input.GetMouseButtonDown(1))
         {
-            Debug.Log(grid.GetGridObject(UtilsClass.GetMouseWorldPosition()));
+
+            var gridObject = grid.GetGridObject(UtilsClass.GetMouseWorldPosition());
+            if (gridObject != null)
+            {
+                gridObject.IsWalkable = !gridObject.IsWalkable;
+            }
         }
     }
 }
@@ -46,10 +58,61 @@ public class AStartGridObject
 {
     public int x;
     public int y;
+    private int gValue;
+    private int hValue;
+    private int fValue;
+    private bool isWalkable;
 
-    public int gValue; //Расстояние до начала
-    public int hValue; //Расстояние до конца
-    public int fValue; //Сумма расстояний
+
+    public int GValue
+    {
+        set
+        {
+            gValue = value;
+            grid.TriggerGridObjectChanged(this.x, this.y);
+        }
+        get
+        {
+            return gValue;
+        }
+    } //Стоимость перехода от начальной точки
+    public int HValue 
+    {
+        set
+        {
+            hValue = value;
+            grid.TriggerGridObjectChanged(this.x, this.y);
+        }
+        get
+        {
+            return hValue;
+        }
+    } //Эвристическая стоимость достижения конечной точки
+    public int FValue
+    {
+        set
+        {
+            fValue = value;
+            grid.TriggerGridObjectChanged(this.x, this.y);
+        }
+        get
+        {
+            return gValue + hValue;
+        }
+    }
+
+    public bool IsWalkable
+    {
+        set
+        {
+            isWalkable = value;
+            grid.TriggerGridObjectChanged(this.x, this.y);
+        }
+        get
+        {
+            return isWalkable;
+        }
+    }
 
     public Grid<AStartGridObject> grid;
 
@@ -58,6 +121,7 @@ public class AStartGridObject
         this.x = x;
         this.y = y;
         this.grid = grid;
+        this.isWalkable = true;
     }
 
     public int GetFValue()
@@ -67,6 +131,44 @@ public class AStartGridObject
 
     public override string ToString()
     {
-        return $"{gValue} {hValue} \n {GetFValue()}";
+        if (isWalkable)
+        {
+            return $"{GValue} {HValue} \n {FValue}";
+        }
+        else
+        {
+            return "F";
+        }
+    }
+
+    public static bool operator== (AStartGridObject obj1, AStartGridObject obj2)
+    {
+        if(ReferenceEquals(obj1, null))
+        {
+            return false;
+        }
+
+        if (ReferenceEquals(obj2, null))
+        {
+            return false;
+        }
+
+
+        return obj1.x == obj2.x && obj1.y == obj2.y;
+    }
+
+    public static bool operator!= (AStartGridObject obj1, AStartGridObject obj2)
+    {
+        if (ReferenceEquals(obj1, null))
+        {
+            return false;
+        }
+
+        if (ReferenceEquals(obj2, null))
+        {
+            return true;
+        }
+
+        return obj1.x != obj2.x && obj1.y != obj2.y;
     }
 }
