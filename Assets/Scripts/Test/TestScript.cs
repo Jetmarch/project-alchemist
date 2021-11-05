@@ -16,9 +16,8 @@ public class TestScript : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0))
         {
-            int x, y;
             Vector3 mouseWorldPosition = UtilsClass.GetMouseWorldPosition();
-            pathfinding.GetGrid().GetXY(mouseWorldPosition, out x, out y);
+            pathfinding.GetGrid().GetXY(mouseWorldPosition, out int x, out int y);
             List<PathNode> path = pathfinding.FindPath(0, 0, x, y);
             if (path != null)
             {
@@ -31,7 +30,10 @@ public class TestScript : MonoBehaviour
 
         if(Input.GetMouseButtonDown(1))
         {
-
+            Vector3 mouseWorldPosition = UtilsClass.GetMouseWorldPosition();
+            pathfinding.GetGrid().GetXY(mouseWorldPosition, out int x, out int y);
+            var node = pathfinding.GetGrid().GetGridObject(x, y);
+            node.walkable = !node.walkable;
         }
     }
 }

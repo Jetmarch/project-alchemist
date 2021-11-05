@@ -129,5 +129,10 @@ public class Grid<TGridObject>
     {
         return this.height;
     }
+
+    public float GetCellSize()
+    {
+        return cellSize;
+    }
    
 }

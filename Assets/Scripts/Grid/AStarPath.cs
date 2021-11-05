@@ -17,6 +17,27 @@ public class AStarPath
         grid = new Grid<PathNode>(width, height, 5f, Vector3.zero, (int x, int y, Grid<PathNode> g) => new PathNode(x, y, g));
     }
 
+    public List<Vector3> FindPath(Vector3 startWorldPosition, Vector3 endWorldPosition)
+    {
+        grid.GetXY(startWorldPosition, out int startX, out int startY);
+        grid.GetXY(endWorldPosition, out int endX, out int endY);
+
+        var path = FindPath(startX, startY, endX, endY);
+        if(path == null)
+        {
+            return null;
+        }
+        else
+        {
+            var vectorPath = new List<Vector3>();
+            foreach(var node in path)
+            {
+                vectorPath.Add(new Vector3(node.x, node.y, 0) * grid.GetCellSize() + Vector3.one * grid.GetCellSize() * .5f);
+            }
+            return vectorPath;
+        }
+    }
+
     public List<PathNode> FindPath(int startX, int startY, int endX, int endY)
     {
          PathNode startNode = grid.GetGridObject(startX, startY);
@@ -44,10 +65,12 @@ public class AStarPath
         while(openList.Count > 0)
         {
             PathNode currentNode = GetLowestPathNode(openList);
-            if (currentNode == endNode)
+            if(currentNode == endNode)
             {
                 return CalculatePath(endNode);
             }
+
+            
 
             openList.Remove(currentNode);
             closedList.Add(currentNode);
@@ -58,6 +81,12 @@ public class AStarPath
             {
                 if(closedList.Contains(neighbourNode))
                 {
+                    continue;
+                }
+
+                if(!neighbourNode.walkable)
+                {
+                    closedList.Add(neighbourNode);
                     continue;
                 }
 

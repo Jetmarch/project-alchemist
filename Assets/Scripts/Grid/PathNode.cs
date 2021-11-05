@@ -6,21 +6,99 @@ public class PathNode
 {
     private Grid<PathNode> grid;
 
-    public int x;
-    public int y;
-    
+    private int _x;
+    private int _y;
+    private bool _walkable;
 
-    public int gCost;
-    public int hCost;
-    public int fCost;
+    private int _gCost;
+    private int _hCost;
+    private int _fCost;
+
+
+    public int x
+    {
+        set
+        {
+            _x = value;
+            grid.TriggerGridObjectChanged(_x, _y);
+        }
+        get
+        {
+            return _x;
+        }
+    }
+
+    public int y
+    {
+        set
+        {
+            _y = value;
+            grid.TriggerGridObjectChanged(_x, _y);
+        }
+        get
+        {
+            return _y;
+        }
+    }
+
+    public bool walkable
+    {
+        set
+        {
+            _walkable = value;
+            grid.TriggerGridObjectChanged(_x, _y);
+        }
+        get
+        {
+            return _walkable;
+        }
+    }
+
+    public int gCost
+    {
+        set
+        {
+            _gCost = value;
+            grid.TriggerGridObjectChanged(_x, _y);
+        }
+        get
+        {
+            return _gCost;
+        }
+    }
+    public int hCost
+    {
+        set
+        {
+            _hCost = value;
+            grid.TriggerGridObjectChanged(_x, _y);
+        }
+        get
+        {
+            return _hCost;
+        }
+    }
+    public int fCost
+    {
+        set
+        {
+            _fCost = value;
+            grid.TriggerGridObjectChanged(_x, _y);
+        }
+        get
+        {
+            return _fCost;
+        }
+    }
 
     public PathNode cameFromNode;
 
     public PathNode(int x, int y, Grid<PathNode> grid)
     {
-        this.x = x;
-        this.y = y;
+        this._x = x;
+        this._y = y;
         this.grid = grid;
+        this._walkable = true;
     }
 
     public void CalculateFCost()
@@ -30,6 +108,13 @@ public class PathNode
 
     public override string ToString()
     {
-        return x + ", " + y;
+        if (walkable)
+        {
+            return x + ", " + y;
+        }
+        else
+        {
+            return "WALL";
+        }
     }
 }
