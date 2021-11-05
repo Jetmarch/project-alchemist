@@ -5,120 +5,155 @@ using System.Linq;
 
 public class AStarPath
 {
-    public static void DoStep(AStartGridObject startPoint, AStartGridObject endPoint)
+    private const int MOVE_STRAIGHT_COST = 10;
+    private const int MOVE_DIAGONAL_COST = 14;
+
+    private Grid<PathNode> grid;
+    private List<PathNode> openList;
+    private List<PathNode> closedList;
+
+    public AStarPath(int width, int height)
     {
-        List<AStartGridObject> openList = new List<AStartGridObject>();
-        List<AStartGridObject> closedList = new List<AStartGridObject>();
+        grid = new Grid<PathNode>(width, height, 5f, Vector3.zero, (int x, int y, Grid<PathNode> g) => new PathNode(x, y, g));
+    }
 
-        AStartGridObject current = startPoint;
-        openList.Add(current);
-        current.HValue = HeuristicFunc(startPoint, endPoint);
+    public List<PathNode> FindPath(int startX, int startY, int endX, int endY)
+    {
+         PathNode startNode = grid.GetGridObject(startX, startY);
+        PathNode endNode = grid.GetGridObject(endX, endY);
 
-        while (openList.Count() > 0)
+        openList = new List<PathNode>() { startNode };
+        closedList = new List<PathNode>();
+
+        //Initialize grid
+        for(int x = 0; x < grid.GetWidth(); x++)
         {
-            if (current == endPoint)
+            for (int y = 0; y < grid.GetHeight(); y++)
             {
-                Debug.Log("Path complete");
-                return;
+                PathNode pathNode = grid.GetGridObject(x, y);
+                pathNode.gCost = int.MaxValue;
+                pathNode.CalculateFCost();
+                pathNode.cameFromNode = null;
             }
-            //Создание сетки и попытка достичь конечной точки
-            var validSuccesors = new List<AStartGridObject>();
-            var succesors = GetSuccessors(current);
-            foreach (var item in succesors)
+        }
+
+        startNode.gCost = 0;
+        startNode.hCost = CalculateDistance(startNode, endNode);
+        startNode.CalculateFCost();
+
+        while(openList.Count > 0)
+        {
+            PathNode currentNode = GetLowestPathNode(openList);
+            if (currentNode == endNode)
             {
-                if (!closedList.Contains(item))
-                {
-                    validSuccesors.Add(item);
-                }
+                return CalculatePath(endNode);
             }
 
-            var nextNode = validSuccesors.Count() > 0 ? validSuccesors[0] : null;
-            foreach (var item in validSuccesors)
+            openList.Remove(currentNode);
+            closedList.Add(currentNode);
+
+            var neighbourList = GetNeighbourList(currentNode);
+
+            foreach(var neighbourNode in neighbourList)
             {
-                if (closedList.Contains(item))
+                if(closedList.Contains(neighbourNode))
                 {
                     continue;
                 }
 
-
-                item.GValue = current.GValue + 1;
-                item.HValue = HeuristicFunc(item, endPoint);
-                openList.Add(item);
-                if (nextNode.FValue > item.FValue)
+                int tentativeGCost = currentNode.gCost + CalculateDistance(currentNode, neighbourNode);
+                if (tentativeGCost < neighbourNode.gCost)
                 {
-                    nextNode = item;
-                }
+                    neighbourNode.cameFromNode = currentNode;
+                    neighbourNode.gCost = tentativeGCost;
+                    neighbourNode.hCost = CalculateDistance(neighbourNode, endNode);
+                    neighbourNode.CalculateFCost();
 
-                if (nextNode.HValue > item.HValue && nextNode.FValue == item.FValue)
-                {
-                    nextNode = item;
+                    if(!openList.Contains(neighbourNode))
+                    {
+                        openList.Add(neighbourNode);
+                    }
                 }
             }
-
-            openList.Remove(current);
-            closedList.Add(current);
-
-            current = nextNode;
-            Debug.Log($"Current item X={current.x} Y={current.y} Walkable={current.IsWalkable}");
         }
 
-        //Возвращение из конечной точки в начальную самым "дешёвым" путём
-
-
+        return null;
     }
-   
 
-    public static List<AStartGridObject> UpdateWeigths(AStartGridObject gridObject, AStartGridObject startPoint, AStartGridObject endPoint)
+    private List<PathNode> GetNeighbourList(PathNode currentNode)
     {
-        Vector2 startPointCoord = new Vector2(startPoint.x, startPoint.y);
-        Vector2 endPointCoord = new Vector2(endPoint.x, endPoint.y);
+        List<PathNode> neighbourList = new List<PathNode>();
 
-        var neighbors = GetSuccessors(gridObject);
-
-        foreach(var obj in neighbors)
+        if(currentNode.x - 1 >= 0)
         {
-            CalculateGridObjectWeightsAndUpdate(obj, startPointCoord, endPointCoord);
+            //Left
+            neighbourList.Add(GetNode(currentNode.x - 1,currentNode.y));
+            //Left Down
+            if (currentNode.y - 1 >= 0) neighbourList.Add(GetNode(currentNode.x - 1, currentNode.y - 1));
+            //Left up
+            if (currentNode.y + 1 < grid.GetHeight()) neighbourList.Add(GetNode(currentNode.x - 1, currentNode.y + 1));
         }
+        if(currentNode.x + 1 < grid.GetWidth())
+        {
+            //Right
+            neighbourList.Add(GetNode(currentNode.x + 1, currentNode.y));
+            //Right up
+            if (currentNode.y + 1 < grid.GetHeight()) neighbourList.Add(GetNode(currentNode.x + 1, currentNode.y + 1));
+            //Right down
+            if (currentNode.y - 1 >= 0) neighbourList.Add(GetNode(currentNode.x + 1, currentNode.y - 1));
+        }
+        //Up
+        if (currentNode.y + 1 < grid.GetHeight()) neighbourList.Add(GetNode(currentNode.x, currentNode.y + 1));
+        //Down
+        if (currentNode.y - 1 >= 0) neighbourList.Add(GetNode(currentNode.x, currentNode.y - 1));
 
-        return neighbors;
+        return neighbourList;
     }
 
-    private static int HeuristicFunc(AStartGridObject obj1, AStartGridObject obj2)
+    private PathNode GetNode(int x, int y)
     {
-        return Mathf.Abs(obj1.x - obj2.x) + Mathf.Abs(obj1.y - obj2.y);
+        return grid.GetGridObject(x, y);
     }
 
-    private static int CalculateDistanceBetweenNods(AStartGridObject nodeOne, AStartGridObject nodeTwo)
+    private List<PathNode> CalculatePath(PathNode endNode)
     {
-        Vector2 nodeOneVec = new Vector2(nodeOne.x, nodeOne.y);
-        Vector2 nodeTwoVec = new Vector2(nodeTwo.x, nodeTwo.y);
+        List<PathNode> path = new List<PathNode>();
+        path.Add(endNode);
 
-        return Mathf.RoundToInt(Vector2.Distance(nodeOneVec, nodeTwoVec));
+        PathNode currentNode = endNode;
+
+        while(currentNode.cameFromNode != null)
+        {
+            path.Add(currentNode.cameFromNode);
+            currentNode = currentNode.cameFromNode;
+        }
+        path.Reverse();
+        return path;
     }
 
-    private static void CalculateGridObjectWeightsAndUpdate(AStartGridObject gridObject, Vector2 startPointCoord, Vector2 endPointCoord)
+    private int CalculateDistance(PathNode a, PathNode b)
     {
-        Vector2 gridObjectCoord = new Vector2(gridObject.x, gridObject.y);
-        int gValue = Mathf.FloorToInt(Vector2.Distance(gridObjectCoord, startPointCoord));
-        int hValue = Mathf.FloorToInt(Vector2.Distance(gridObjectCoord, endPointCoord));
-        gridObject.GValue = gValue;
-        gridObject.HValue = hValue;
-        gridObject.grid.TriggerGridObjectChanged(gridObject.x, gridObject.y);
+        int xDistance = Mathf.Abs(a.x - b.x);
+        int yDistance = Mathf.Abs(a.y - b.y);
+        int remaining = Mathf.Abs(xDistance - yDistance);
+        return MOVE_DIAGONAL_COST * Mathf.Min(xDistance, yDistance) + MOVE_STRAIGHT_COST * remaining;
     }
 
-    private static List<AStartGridObject> GetSuccessors(AStartGridObject gridObject)
+    private PathNode GetLowestPathNode(List<PathNode> pathNodeList)
     {
-        var upObject = gridObject.grid.GetGridObject(gridObject.x, gridObject.y + 1);
-        var downObject = gridObject.grid.GetGridObject(gridObject.x, gridObject.y - 1);
-        var leftObject = gridObject.grid.GetGridObject(gridObject.x - 1, gridObject.y);
-        var rightObject = gridObject.grid.GetGridObject(gridObject.x + 1, gridObject.y);
+        PathNode lowestFCostNode = pathNodeList[0];
+        for (int i = 0; i < pathNodeList.Count; i++)
+        {
+            if(pathNodeList[i].fCost < lowestFCostNode.fCost)
+            {
+                lowestFCostNode = pathNodeList[i];
+            }
+        }
+        return lowestFCostNode;
+    }
 
-        var neighbors = new List<AStartGridObject>();
-        if(upObject != null && upObject.IsWalkable) neighbors.Add(upObject);
-        if(downObject != null && downObject.IsWalkable) neighbors.Add(downObject);
-        if(leftObject != null && leftObject.IsWalkable) neighbors.Add(leftObject);
-        if(rightObject != null && rightObject.IsWalkable) neighbors.Add(rightObject);
-
-        return neighbors;
+    public Grid<PathNode> GetGrid()
+    {
+        return grid;
     }
 }
