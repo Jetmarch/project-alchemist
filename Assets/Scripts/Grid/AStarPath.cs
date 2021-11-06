@@ -12,9 +12,12 @@ public class AStarPath
     private List<PathNode> openList;
     private List<PathNode> closedList;
 
-    public AStarPath(int width, int height)
+    public static AStarPath instance { private set; get; }
+
+    public AStarPath(int width, int height, float gridCellSize)
     {
-        grid = new Grid<PathNode>(width, height, 5f, Vector3.zero, (int x, int y, Grid<PathNode> g) => new PathNode(x, y, g));
+        grid = new Grid<PathNode>(width, height, gridCellSize, Vector3.zero, (int x, int y, Grid<PathNode> g) => new PathNode(x, y, g));
+        instance = this;
     }
 
     public List<Vector3> FindPath(Vector3 startWorldPosition, Vector3 endWorldPosition)
@@ -40,7 +43,7 @@ public class AStarPath
 
     public List<PathNode> FindPath(int startX, int startY, int endX, int endY)
     {
-         PathNode startNode = grid.GetGridObject(startX, startY);
+        PathNode startNode = grid.GetGridObject(startX, startY);
         PathNode endNode = grid.GetGridObject(endX, endY);
 
         openList = new List<PathNode>() { startNode };
