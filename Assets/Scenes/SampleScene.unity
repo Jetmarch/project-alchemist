@@ -746,7 +746,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMoving: 0
   timeForOneTurn: 0.3
-  settings: {fileID: 0}
+  settings: {fileID: 11400000, guid: 86f5b8df11a5cfc42b7eace2dee8b123, type: 2}
 --- !u!1 &1486082364
 GameObject:
   m_ObjectHideFlags: 0
@@ -1005,7 +1005,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bb07d97eb1811a42ac6cb5b2acb9d30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settings: {fileID: 0}
+  settings: {fileID: 11400000, guid: 86f5b8df11a5cfc42b7eace2dee8b123, type: 2}
 --- !u!4 &1892769735
 Transform:
   m_ObjectHideFlags: 0
