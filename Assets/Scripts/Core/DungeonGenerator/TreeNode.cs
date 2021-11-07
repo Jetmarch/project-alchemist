@@ -11,4 +11,9 @@ public class TreeNode
 
     public int level;
     public int countId;
+
+    public int width;
+    public int height;
+
+    public Vector3 position;
 }

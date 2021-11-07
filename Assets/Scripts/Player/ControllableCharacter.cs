@@ -14,6 +14,8 @@ public class ControllableCharacter : MonoBehaviour
     [SerializeField]
     private SettingsManager settings;
 
+    private Coroutine movePlayerCoroutine;
+
     private void Start()
     {
         transform.position = new Vector3(settings.gridCellCenter, settings.gridCellCenter, 0f);
@@ -21,22 +23,24 @@ public class ControllableCharacter : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            if (!isMoving)
+
+            Vector3 mouseWorldPosition = UtilsClass.GetMouseWorldPosition();
+            List<Vector3> path = AStarPath.instance.FindPath(transform.position, mouseWorldPosition);
+            if (path != null)
             {
-                Vector3 mouseWorldPosition = UtilsClass.GetMouseWorldPosition();
-                List<Vector3> path = AStarPath.instance.FindPath(transform.position, mouseWorldPosition);
-                if (path != null)
+                if(isMoving)
                 {
-                    StartCoroutine(MovePlayer(path));
-
-                    for (int i = 0; i < path.Count - 1; i++)
-                    {
-                        Debug.DrawLine(path[i], path[i + 1], Color.red, 2, false);
-                    }
-
+                    StopCoroutine(movePlayerCoroutine);
                 }
+                movePlayerCoroutine = StartCoroutine(MovePlayer(path));
+
+                for (int i = 0; i < path.Count - 1; i++)
+                {
+                    Debug.DrawLine(path[i], path[i + 1], Color.red, 2, false);
+                }
+
             }
         }
     }
