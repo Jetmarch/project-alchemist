@@ -14,7 +14,7 @@ public class TestScript : MonoBehaviour
     {
         pathfinding = new AStarPath(5, 5, settings.gridCellSize);
 
-        var binaryTree = new BinaryTree(3, 20, 20);
+        var binaryTree = new BinaryTree(2, 5, 5);
     }
 
     private void Update()

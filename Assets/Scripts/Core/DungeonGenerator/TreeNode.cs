@@ -15,5 +15,7 @@ public class TreeNode
     public int width;
     public int height;
 
-    public Vector3 position;
+    public Vector2Int positionOnGrid;
+
+    public DungeonRoom room;
 }

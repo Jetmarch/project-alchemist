@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class BinaryTree
 {
-    private int countOfLevels;
-    private TreeNode root;
-    private List<TreeNode> leafs;
+    public int countOfLevels;
+    public TreeNode root;
+    public List<TreeNode> leafs;
     private int maxLevels;
     private int countIdForNodes;
     public BinaryTree(int countOfLevels, int width, int height)
@@ -53,44 +53,34 @@ public class BinaryTree
             int modifiedWidth = parent.width;
             modifiedWidth = modifiedWidth / (int)Random.Range(2f, 5f);
 
-            if (Random.Range(0, 100) >= 50)
-            {
-                parent.left.width = modifiedWidth;
-                parent.left.height = parent.height;
+            parent.left.width = modifiedWidth;
+            parent.left.height = parent.height;
 
-                parent.right.width = parent.width - modifiedWidth;
-                parent.right.height = parent.height;
-            }
-            else
-            {
-                parent.right.width = modifiedWidth;
-                parent.right.height = parent.height;
+            parent.right.width = parent.width - modifiedWidth;
+            parent.right.height = parent.height;
 
-                parent.left.width = parent.width - modifiedWidth;
-                parent.left.height = parent.height;
-            }
+            parent.left.positionOnGrid.y = parent.positionOnGrid.y;
+            parent.right.positionOnGrid.y = parent.positionOnGrid.y;
+            parent.left.positionOnGrid.x = parent.positionOnGrid.x;
+            parent.right.positionOnGrid.x = parent.positionOnGrid.x + parent.left.width;
+
         }
         else
         {
             int modifiedHeight = parent.height;
             modifiedHeight = modifiedHeight / (int)Random.Range(2f, 5f);
 
-            if (Random.Range(0, 100) >= 50)
-            {
-                parent.left.height = modifiedHeight;
-                parent.left.width = parent.width;
+            parent.left.height = modifiedHeight;
+            parent.left.width = parent.width;
 
-                parent.right.height = parent.height - modifiedHeight;
-                parent.right.width = parent.width;
-            }
-            else
-            {
-                parent.right.height = modifiedHeight;
-                parent.right.width = parent.width;
+            parent.right.height = parent.height - modifiedHeight;
+            parent.right.width = parent.width;
 
-                parent.left.height = parent.height - modifiedHeight;
-                parent.left.width = parent.width;
-            }
+            parent.left.positionOnGrid.x = parent.positionOnGrid.x;
+            parent.right.positionOnGrid.x = parent.positionOnGrid.x;
+            parent.left.positionOnGrid.y = parent.positionOnGrid.y;
+            parent.right.positionOnGrid.y = parent.positionOnGrid.y + parent.left.height;
+
         }
     }
 
