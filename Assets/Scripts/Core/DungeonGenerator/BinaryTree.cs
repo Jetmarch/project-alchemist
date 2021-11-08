@@ -36,16 +36,24 @@ public class BinaryTree
         parent.left.sister = parent.right;
         parent.right.sister = parent.left;
 
+        RandomSizeOfChildNodes(parent);
+
+        GenerateChilds(parent.left);
+        GenerateChilds(parent.right);
+    }
+
+    private void RandomSizeOfChildNodes(TreeNode parent)
+    {
         //¬ыбор по какой стороне будет происходить разделение дочерних элементов
         bool isRandomWidth = false;
         isRandomWidth = Random.value >= 0.5 ? true : false;
 
-        if(isRandomWidth)
+        if (isRandomWidth)
         {
             int modifiedWidth = parent.width;
             modifiedWidth = modifiedWidth / (int)Random.Range(2f, 5f);
 
-            if(Random.Range(0, 100) >= 50)
+            if (Random.Range(0, 100) >= 50)
             {
                 parent.left.width = modifiedWidth;
                 parent.left.height = parent.height;
@@ -84,9 +92,10 @@ public class BinaryTree
                 parent.left.width = parent.width;
             }
         }
-        
+    }
 
-        GenerateChilds(parent.left);
-        GenerateChilds(parent.right);
+    private void RandomRoomInLeaf(TreeNode node)
+    {
+
     }
 }
