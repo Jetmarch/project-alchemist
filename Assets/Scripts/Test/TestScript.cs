@@ -14,7 +14,18 @@ public class TestScript : MonoBehaviour
     {
         pathfinding = new AStarPath(5, 5, settings.gridCellSize);
 
-        var binaryTree = new BinaryTree(2, 5, 5);
+        var binaryTree = new BinaryTree(1, (int)(5 * settings.gridCellSize), (int)(5 * settings.gridCellSize));
+
+        Debug.DrawLine(new Vector3(binaryTree.root.positionOnGrid.x, binaryTree.root.height),
+            new Vector3(binaryTree.root.positionOnGrid.x + binaryTree.root.width, binaryTree.root.positionOnGrid.y + binaryTree.root.height), Color.red, 100f);
+        Debug.DrawLine(new Vector3(binaryTree.root.width, binaryTree.root.height),
+            new Vector3(binaryTree.root.positionOnGrid.x + binaryTree.root.width, binaryTree.root.positionOnGrid.y), Color.red, 100f);
+        foreach (var leaf in binaryTree.leafs)
+        {
+            Debug.Log($"Leaf {leaf.countId} width {leaf.width} height {leaf.height}");
+            Debug.DrawLine(new Vector3(leaf.positionOnGrid.x, leaf.positionOnGrid.y, 0), new Vector3(leaf.positionOnGrid.x + leaf.width, leaf.positionOnGrid.y, 0), Color.red, 100f);
+            Debug.DrawLine(new Vector3(leaf.positionOnGrid.x, leaf.positionOnGrid.y, 0), new Vector3(leaf.positionOnGrid.x, leaf.positionOnGrid.y + leaf.height, 0), Color.red, 100f);
+        }
     }
 
     private void Update()
