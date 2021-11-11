@@ -14,7 +14,7 @@ public class TestScript : MonoBehaviour
     {
         pathfinding = new AStarPath(5, 5, settings.gridCellSize);
 
-        var binaryTree = new BinaryTree(2, (int)(5 * settings.gridCellSize), (int)(5 * settings.gridCellSize), settings.gridCellSize);
+        var binaryTree = new BinaryTree(2, 5 * settings.gridCellSize, 5 * settings.gridCellSize, settings.gridCellSize);
 
         Debug.DrawLine(new Vector3(binaryTree.root.positionOnGrid.x, binaryTree.root.height),
             new Vector3(binaryTree.root.positionOnGrid.x + binaryTree.root.width, binaryTree.root.positionOnGrid.y + binaryTree.root.height), Color.red, 100f);

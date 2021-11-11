@@ -15,14 +15,14 @@ public class Grid<TGridObject>
 
     private int width;
     private int height;
-    private float cellSize;
+    private int cellSize;
     private Vector3 originPosition;
     public TGridObject[,] gridArray;
     private TextMesh[,] debugTextArray;
     private Func<int, int, Grid<TGridObject>, TGridObject>  createTGridObjectFunc;
 
 
-    public Grid(int width, int height, float cellSize, Vector3 originPosition, Func<int, int, Grid<TGridObject>, TGridObject> createTGridObject)
+    public Grid(int width, int height, int cellSize, Vector3 originPosition, Func<int, int, Grid<TGridObject>, TGridObject> createTGridObject)
     {
         this.width = width;
         this.height = height;

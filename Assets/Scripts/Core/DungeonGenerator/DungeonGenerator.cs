@@ -17,7 +17,7 @@ public class DungeonGenerator
 
     public void GenerateDungeon(int widthInCells, int heightInCells, int gridCellSize, int countOfRooms)
     {
-        grid = new Grid<int>(widthInCells, heightInCells, 2.5f, Vector3.zero, (int x, int y, Grid<int> g) => 0);
+        grid = new Grid<int>(widthInCells, heightInCells, gridCellSize, Vector3.zero, (int x, int y, Grid<int> g) => 0);
 
         //TODO: Автоматически подгонять количество комнат под ближайший корень из 2
         int countOfBinaryTreeLevelBasedOnRoomCount = (int)Mathf.Sqrt(countOfRooms);
