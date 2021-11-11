@@ -9,11 +9,17 @@ public class BinaryTree
     public List<TreeNode> leafs;
     private int maxLevels;
     private int countIdForNodes;
-    public BinaryTree(int countOfLevels, int width, int height)
+    private int gridCellSize;
+
+    private const int MIN_PROCENT_OF_CELL_AREA = 30;
+    private const int MAX_PROCENT_OF_CELL_AREA = 70;
+
+    public BinaryTree(int countOfLevels, int width, int height, int gridCellSize)
     {
         this.countOfLevels = countOfLevels;
-        maxLevels = countOfLevels;
-        countIdForNodes = 0;
+        this.maxLevels = countOfLevels;
+        this.countIdForNodes = 0;
+        this.gridCellSize = gridCellSize;
         root = new TreeNode();
         root.level = 0;
         root.countId = countIdForNodes;
@@ -50,8 +56,8 @@ public class BinaryTree
 
         if (isRandomWidth)
         {
-            int modifiedWidth = parent.width;
-            modifiedWidth = modifiedWidth / (int)Random.Range(2f, 5f);
+            float modifiedWidth = Mathf.Round(Random.Range(parent.width / 100 * MIN_PROCENT_OF_CELL_AREA, parent.width / 100 * MAX_PROCENT_OF_CELL_AREA));
+            modifiedWidth = modifiedWidth - (modifiedWidth % gridCellSize);
 
             parent.left.width = modifiedWidth;
             parent.left.height = parent.height;
@@ -67,8 +73,8 @@ public class BinaryTree
         }
         else
         {
-            int modifiedHeight = parent.height;
-            modifiedHeight = modifiedHeight / (int)Random.Range(2f, 5f);
+            float modifiedHeight = Mathf.Round(Random.Range(parent.height / 100 * MIN_PROCENT_OF_CELL_AREA, parent.height / 100 * MAX_PROCENT_OF_CELL_AREA));
+            modifiedHeight = modifiedHeight - (modifiedHeight % gridCellSize);
 
             parent.left.height = modifiedHeight;
             parent.left.width = parent.width;

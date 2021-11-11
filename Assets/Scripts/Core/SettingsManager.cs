@@ -5,6 +5,6 @@ using UnityEngine;
 [CreateAssetMenu]
 public class SettingsManager : ScriptableObject
 {
-    public float gridCellSize;
-    public float gridCellCenter;
+    public int gridCellSize;
+    public int gridCellCenter;
 }

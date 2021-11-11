@@ -12,10 +12,10 @@ public class TreeNode
     public int level;
     public int countId;
 
-    public int width;
-    public int height;
+    public float width;
+    public float height;
 
-    public Vector2Int positionOnGrid;
+    public Vector2 positionOnGrid;
 
     public DungeonRoom room;
 }
