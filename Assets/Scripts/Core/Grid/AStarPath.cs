@@ -14,9 +14,9 @@ public class AStarPath
 
     public static AStarPath instance { private set; get; }
 
-    public AStarPath(int width, int height, float gridCellSize)
+    public AStarPath(int width, int height, int gridCellSize)
     {
-        grid = new Grid<PathNode>(width, height, gridCellSize, Vector3.zero, (int x, int y, Grid<PathNode> g) => new PathNode(x, y, g));
+        grid = new Grid<PathNode>(width, height, gridCellSize, Vector3.zero, (int x, int y, bool w, Grid<PathNode> g) => new PathNode(x, y, w, g));
         instance = this;
     }
 

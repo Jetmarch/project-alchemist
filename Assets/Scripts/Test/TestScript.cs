@@ -12,20 +12,13 @@ public class TestScript : MonoBehaviour
 
     private void Start()
     {
-        pathfinding = new AStarPath(5, 5, settings.gridCellSize);
+        //pathfinding = new AStarPath(5, 5, settings.gridCellSize);
 
-        var binaryTree = new BinaryTree(2, 5 * settings.gridCellSize, 5 * settings.gridCellSize, settings.gridCellSize);
+        var dungeonGenerator = new DungeonGenerator();
+        dungeonGenerator.GenerateDungeon(5, 5, 2, 4);
 
-        Debug.DrawLine(new Vector3(binaryTree.root.positionOnGrid.x, binaryTree.root.height),
-            new Vector3(binaryTree.root.positionOnGrid.x + binaryTree.root.width, binaryTree.root.positionOnGrid.y + binaryTree.root.height), Color.red, 100f);
-        Debug.DrawLine(new Vector3(binaryTree.root.width, binaryTree.root.height),
-            new Vector3(binaryTree.root.positionOnGrid.x + binaryTree.root.width, binaryTree.root.positionOnGrid.y), Color.red, 100f);
-        foreach (var leaf in binaryTree.leafs)
-        {
-            Debug.Log($"Leaf {leaf.countId} width {leaf.width} height {leaf.height}");
-            Debug.DrawLine(new Vector3(leaf.positionOnGrid.x, leaf.positionOnGrid.y, 0), new Vector3(leaf.positionOnGrid.x + leaf.width, leaf.positionOnGrid.y, 0), Color.red, 100f);
-            Debug.DrawLine(new Vector3(leaf.positionOnGrid.x, leaf.positionOnGrid.y, 0), new Vector3(leaf.positionOnGrid.x, leaf.positionOnGrid.y + leaf.height, 0), Color.red, 100f);
-        }
+        //var binaryTree = new BinaryTree(2, 5 * settings.gridCellSize, 5 * settings.gridCellSize, settings.gridCellSize);
+        //binaryTree.DrawDebugLines();
     }
 
     private void Update()

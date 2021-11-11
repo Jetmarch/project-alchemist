@@ -23,8 +23,8 @@ public class BinaryTree
         root = new TreeNode();
         root.level = 0;
         root.countId = countIdForNodes;
-        root.width = width;
-        root.height = height;
+        root.width = width * gridCellSize;
+        root.height = height * gridCellSize;
         leafs = new List<TreeNode>();
         GenerateChilds(root);
     }
@@ -93,5 +93,19 @@ public class BinaryTree
     private void RandomRoomInLeaf(TreeNode node)
     {
 
+    }
+
+    public void DrawDebugLines()
+    {
+        Debug.DrawLine(new Vector3(root.positionOnGrid.x, root.height),
+            new Vector3(root.positionOnGrid.x + root.width, root.positionOnGrid.y + root.height), Color.red, 100f);
+        Debug.DrawLine(new Vector3(root.width, root.height),
+            new Vector3(root.positionOnGrid.x + root.width, root.positionOnGrid.y), Color.red, 100f);
+        foreach (var leaf in leafs)
+        {
+            Debug.Log($"Leaf {leaf.countId} width {leaf.width} height {leaf.height}");
+            Debug.DrawLine(new Vector3(leaf.positionOnGrid.x, leaf.positionOnGrid.y, 0), new Vector3(leaf.positionOnGrid.x + leaf.width, leaf.positionOnGrid.y, 0), Color.red, 100f);
+            Debug.DrawLine(new Vector3(leaf.positionOnGrid.x, leaf.positionOnGrid.y, 0), new Vector3(leaf.positionOnGrid.x, leaf.positionOnGrid.y + leaf.height, 0), Color.red, 100f);
+        }
     }
 }

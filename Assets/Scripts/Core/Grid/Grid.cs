@@ -19,10 +19,10 @@ public class Grid<TGridObject>
     private Vector3 originPosition;
     public TGridObject[,] gridArray;
     private TextMesh[,] debugTextArray;
-    private Func<int, int, Grid<TGridObject>, TGridObject>  createTGridObjectFunc;
+    private Func<int, int, bool, Grid<TGridObject>, TGridObject>  createTGridObjectFunc;
 
 
-    public Grid(int width, int height, int cellSize, Vector3 originPosition, Func<int, int, Grid<TGridObject>, TGridObject> createTGridObject)
+    public Grid(int width, int height, int cellSize, Vector3 originPosition, Func<int, int, bool, Grid<TGridObject>, TGridObject> createTGridObject, bool isAllCellsAreWall = true)
     {
         this.width = width;
         this.height = height;
@@ -40,7 +40,7 @@ public class Grid<TGridObject>
         {
             for (int y = 0; y < gridArray.GetLength(1); y++)
             {
-                gridArray[x, y] = createTGridObject(x, y, this);
+                gridArray[x, y] = createTGridObject(x, y, isAllCellsAreWall, this);
             }
         }
 

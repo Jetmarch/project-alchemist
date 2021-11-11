@@ -93,12 +93,12 @@ public class PathNode
 
     public PathNode cameFromNode;
 
-    public PathNode(int x, int y, Grid<PathNode> grid)
+    public PathNode(int x, int y, bool walkable, Grid<PathNode> grid)
     {
         this._x = x;
         this._y = y;
         this.grid = grid;
-        this._walkable = true;
+        this._walkable = walkable;
     }
 
     public void CalculateFCost()
