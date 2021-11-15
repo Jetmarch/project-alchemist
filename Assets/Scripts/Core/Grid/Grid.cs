@@ -22,7 +22,7 @@ public class Grid<TGridObject>
     private Func<int, int, bool, Grid<TGridObject>, TGridObject>  createTGridObjectFunc;
 
 
-    public Grid(int width, int height, int cellSize, Vector3 originPosition, Func<int, int, bool, Grid<TGridObject>, TGridObject> createTGridObject, bool isAllCellsAreWall = true)
+    public Grid(int width, int height, int cellSize, Vector3 originPosition, Func<int, int, bool, Grid<TGridObject>, TGridObject> createTGridObject, bool isAllCellsAreWall = true, bool isDebugMode = true)
     {
         this.width = width;
         this.height = height;
@@ -33,7 +33,7 @@ public class Grid<TGridObject>
         debugTextArray = new TextMesh[width, height];
         this.createTGridObjectFunc = createTGridObject;
 
-        bool isDebug = true;
+        bool isDebug = isDebugMode;
 
 
         for (int x = 0; x < gridArray.GetLength(0); x++)

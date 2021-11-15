@@ -147,6 +147,15 @@ public class AStarPath
         return grid.GetGridObject(x, y);
     }
 
+    public void SetWalkableByXY(int x, int y, bool walkable)
+    {
+        var gridObject = grid.GetGridObject(x, y);
+        if(gridObject != null)
+        {
+            gridObject.walkable = walkable;
+        }
+    }
+
     private List<PathNode> CalculatePath(PathNode endNode)
     {
         List<PathNode> path = new List<PathNode>();

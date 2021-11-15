@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DungeonRoom
 {
-    public Vector3 position;
+    public Vector2 position;
     public float width;
     public float height;
 }

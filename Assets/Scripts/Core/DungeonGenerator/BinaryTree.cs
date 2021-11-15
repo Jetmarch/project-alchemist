@@ -56,7 +56,7 @@ public class BinaryTree
 
         if (isRandomWidth)
         {
-            float modifiedWidth = Mathf.Round(Random.Range(parent.width / 100 * MIN_PROCENT_OF_CELL_AREA, parent.width / 100 * MAX_PROCENT_OF_CELL_AREA));
+            float modifiedWidth = Mathf.RoundToInt(Random.Range(parent.width / 100 * MIN_PROCENT_OF_CELL_AREA, parent.width / 100 * MAX_PROCENT_OF_CELL_AREA));
             modifiedWidth = modifiedWidth - (modifiedWidth % gridCellSize);
 
             parent.left.width = modifiedWidth;
@@ -73,7 +73,7 @@ public class BinaryTree
         }
         else
         {
-            float modifiedHeight = Mathf.Round(Random.Range(parent.height / 100 * MIN_PROCENT_OF_CELL_AREA, parent.height / 100 * MAX_PROCENT_OF_CELL_AREA));
+            float modifiedHeight = Mathf.RoundToInt(Random.Range(parent.height / 100 * MIN_PROCENT_OF_CELL_AREA, parent.height / 100 * MAX_PROCENT_OF_CELL_AREA));
             modifiedHeight = modifiedHeight - (modifiedHeight % gridCellSize);
 
             parent.left.height = modifiedHeight;
@@ -97,15 +97,25 @@ public class BinaryTree
 
     public void DrawDebugLines()
     {
-        Debug.DrawLine(new Vector3(root.positionOnGrid.x, root.height),
-            new Vector3(root.positionOnGrid.x + root.width, root.positionOnGrid.y + root.height), Color.red, 100f);
-        Debug.DrawLine(new Vector3(root.width, root.height),
-            new Vector3(root.positionOnGrid.x + root.width, root.positionOnGrid.y), Color.red, 100f);
+       // Debug.DrawLine(new Vector3(root.positionOnGrid.x  , root.height ),
+        //    new Vector3(root.positionOnGrid.x + root.width, root.positionOnGrid.y + root.height), Color.red, 100f);
+        //Debug.DrawLine(new Vector3(root.width, root.height),
+        //    new Vector3(root.positionOnGrid.x + root.width, root.positionOnGrid.y), Color.red, 100f);
         foreach (var leaf in leafs)
         {
-            Debug.Log($"Leaf {leaf.countId} width {leaf.width} height {leaf.height}");
-            Debug.DrawLine(new Vector3(leaf.positionOnGrid.x, leaf.positionOnGrid.y, 0), new Vector3(leaf.positionOnGrid.x + leaf.width, leaf.positionOnGrid.y, 0), Color.red, 100f);
-            Debug.DrawLine(new Vector3(leaf.positionOnGrid.x, leaf.positionOnGrid.y, 0), new Vector3(leaf.positionOnGrid.x, leaf.positionOnGrid.y + leaf.height, 0), Color.red, 100f);
+            var room = leaf.room;
+           // Debug.DrawLine(new Vector3(leaf.positionOnGrid.x, leaf.positionOnGrid.y, 0), new Vector3(leaf.positionOnGrid.x + leaf.width, leaf.positionOnGrid.y, 0), Color.red, 100f);
+          //  Debug.DrawLine(new Vector3(leaf.positionOnGrid.x, leaf.positionOnGrid.y, 0), new Vector3(leaf.positionOnGrid.x, leaf.positionOnGrid.y + leaf.height, 0), Color.red, 100f);
+
+
+           /* Debug.DrawLine(new Vector3(room.position.x , room.height),
+            new Vector3(room.position.x + room.width, room.position.y + room.height), Color.green, 100f);
+            Debug.DrawLine(new Vector3(room.width, room.height),
+                new Vector3(room.position.x + room.width, room.position.y), Color.green, 100f);*/
+            Debug.DrawLine(new Vector3(room.position.x * gridCellSize, room.position.y * gridCellSize, 0),
+                new Vector3(room.position.x * gridCellSize + room.width * gridCellSize, room.position.y * gridCellSize, 0), Color.green, 100f);
+            Debug.DrawLine(new Vector3(room.position.x * gridCellSize, room.position.y * gridCellSize, 0),
+                new Vector3(room.position.x * gridCellSize, room.position.y * gridCellSize + room.height * gridCellSize, 0), Color.green, 100f);
         }
     }
 }
