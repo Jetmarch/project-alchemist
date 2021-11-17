@@ -9,8 +9,8 @@ public class DungeonGenerator
     private AStarPath pathfinding;
     private int gridCellSize;
 
-    private const float MIN_ROOM_HEIGHT = 1f;
-    private const float MIN_ROOM_WIDTH = 1f;
+    private const float MIN_ROOM_HEIGHT = 2f;
+    private const float MIN_ROOM_WIDTH = 2f;
 
     public DungeonGenerator()
     {
@@ -24,7 +24,7 @@ public class DungeonGenerator
         grid = new Grid<int>(widthInCells, heightInCells, gridCellSize, Vector3.zero, (int x, int y, bool isWall, Grid<int> g) => 0, true, false);
 
         //TODO: Автоматически подгонять количество комнат под ближайший корень из 2
-        int countOfBinaryTreeLevelBasedOnRoomCount = (int)Mathf.Sqrt(countOfRooms);
+        int countOfBinaryTreeLevelBasedOnRoomCount = countOfRooms;
         dungeonTree = new BinaryTree(countOfBinaryTreeLevelBasedOnRoomCount, widthInCells, heightInCells, gridCellSize);
         
         GenerateRoomsInLeafsOfBinaryTree(dungeonTree);
@@ -49,6 +49,8 @@ public class DungeonGenerator
     private void GenerateRoomInLeaf(TreeNode node)
     {
         node.room = new DungeonRoom();
+
+        //TODO: Генерация комнат в рандомном процентном соотношении от площади TreeNode
         float roomHeight = Random.Range(MIN_ROOM_HEIGHT, node.height);
         float roomWidth = Random.Range(MIN_ROOM_WIDTH, node.width);
         float roomX = Random.Range(node.positionOnGrid.x, node.width);
@@ -58,6 +60,8 @@ public class DungeonGenerator
         node.room.height = Mathf.Round(roomHeight / gridCellSize);
         node.room.position.x = Mathf.Round(roomX / gridCellSize);
         node.room.position.y = Mathf.Round(roomY / gridCellSize);
+
+        Debug.Log($"Created room width {node.room.width} height {node.room.height} x {node.room.position.x} y {node.room.position.y}");
     }
 
     private void ModificateGridWithDungeonTree()

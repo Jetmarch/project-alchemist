@@ -15,7 +15,7 @@ public class TestScript : MonoBehaviour
         //pathfinding = new AStarPath(5, 5, settings.gridCellSize);
 
         var dungeonGenerator = new DungeonGenerator();
-        dungeonGenerator.GenerateDungeon(20, 20, settings.gridCellSize, 4);
+        dungeonGenerator.GenerateDungeon(20, 20, settings.gridCellSize, 1);
 
        // var binaryTree = new BinaryTree(2, 5 * settings.gridCellSize, 5 * settings.gridCellSize, settings.gridCellSize);
        // binaryTree.DrawDebugLines();
