@@ -110,7 +110,7 @@ public class PathNode
     {
         if (walkable)
         {
-            return x + ", " + y;
+            return "";
         }
         else
         {

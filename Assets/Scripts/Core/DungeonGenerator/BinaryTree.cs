@@ -97,15 +97,15 @@ public class BinaryTree
 
     public void DrawDebugLines()
     {
-        //Debug.DrawLine(new Vector3(root.positionOnGrid.x  , root.height ),
-            //new Vector3(root.positionOnGrid.x + root.width, root.positionOnGrid.y + root.height), Color.red, 100f);
-        //Debug.DrawLine(new Vector3(root.width, root.height),
-            //new Vector3(root.positionOnGrid.x + root.width, root.positionOnGrid.y), Color.red, 100f);
+        Debug.DrawLine(new Vector3(root.positionOnGrid.x  , root.height ),
+            new Vector3(root.positionOnGrid.x + root.width, root.positionOnGrid.y + root.height), Color.red, 100f);
+        Debug.DrawLine(new Vector3(root.width, root.height),
+            new Vector3(root.positionOnGrid.x + root.width, root.positionOnGrid.y), Color.red, 100f);
         foreach (var leaf in leafs)
         {
             var room = leaf.room;
-            //Debug.DrawLine(new Vector3(leaf.positionOnGrid.x, leaf.positionOnGrid.y, 0), new Vector3(leaf.positionOnGrid.x + leaf.width, leaf.positionOnGrid.y, 0), Color.red, 100f);
-            //Debug.DrawLine(new Vector3(leaf.positionOnGrid.x, leaf.positionOnGrid.y, 0), new Vector3(leaf.positionOnGrid.x, leaf.positionOnGrid.y + leaf.height, 0), Color.red, 100f);
+            Debug.DrawLine(new Vector3(leaf.positionOnGrid.x, leaf.positionOnGrid.y, 0), new Vector3(leaf.positionOnGrid.x + leaf.width, leaf.positionOnGrid.y, 0), Color.red, 100f);
+            Debug.DrawLine(new Vector3(leaf.positionOnGrid.x, leaf.positionOnGrid.y, 0), new Vector3(leaf.positionOnGrid.x, leaf.positionOnGrid.y + leaf.height, 0), Color.red, 100f);
 
 
             Debug.DrawLine(new Vector3(room.position.x, room.position.y + room.height) * gridCellSize,

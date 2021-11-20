@@ -51,10 +51,16 @@ public class DungeonGenerator
         node.room = new DungeonRoom();
 
         //TODO: Генерация комнат в рандомном процентном соотношении от площади TreeNode
-        float roomHeight = Random.Range(MIN_ROOM_HEIGHT, node.height);
-        float roomWidth = Random.Range(MIN_ROOM_WIDTH, node.width);
-        float roomX = Random.Range(node.positionOnGrid.x, node.width);
-        float roomY = Random.Range(node.positionOnGrid.y, node.height);
+        //float roomX = Random.Range(node.positionOnGrid.x, node.width);
+        //float roomY = Random.Range(node.positionOnGrid.y, node.height);
+
+        float roomX = Random.Range(node.positionOnGrid.x + (node.positionOnGrid.x / 100 * 20), node.width - (node.width / 100 * 20));
+        float roomY = Random.Range(node.positionOnGrid.y + (node.positionOnGrid.y / 100 * 20), node.height - (node.height / 100 * 20));
+
+
+        float roomHeight = Random.Range(MIN_ROOM_HEIGHT , node.height - roomY);
+        float roomWidth = Random.Range(MIN_ROOM_HEIGHT, node.width - roomX );
+        
 
         node.room.width = Mathf.Round(roomWidth / gridCellSize);
         node.room.height = Mathf.Round(roomHeight / gridCellSize);
