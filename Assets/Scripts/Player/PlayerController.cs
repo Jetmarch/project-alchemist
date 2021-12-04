@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
 
     [Header ("Inventory")]
     [SerializeField] private Inventory inventory;
+    [SerializeField] private Inventory quickSlots;
 
     private Rigidbody2D playerRb;
     private Health playerHealth;
@@ -235,6 +236,18 @@ public class PlayerController : MonoBehaviour
         item.StopUse(this.gameObject, item);
     }
 
+    public void RemoveItemFromQuickSlot(Item item)
+    {
+        if (item == null)
+        {
+            return;
+        }
+
+        quickSlots.RemoveItem(item);
+        item.StopUse(this.gameObject, item);
+    }
+    
+    //Использование предмета происходит только из быстрых слотов
     public void UseItem(Item item)
     {
         if(item == null)
@@ -243,12 +256,28 @@ public class PlayerController : MonoBehaviour
         }
 
         item.Use(this.gameObject, item);
-        RemoveItemFromInventory(item);
+        RemoveItemFromQuickSlot(item);
     }
 
     public void ThrowItem(Item item)
     {
-        Debug.Log("Throw item");
+        if(item == null)
+        {
+            return;
+        }
+
+        var throwableItem = ItemWorldSpawner.SpawnThrowableItem(transform.position, item);
+
+        Vector3 mousePos = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
+        {
+            Debug.Log($"X: {mousePos.x} Y: {mousePos.y}");
+        }
+
+        Vector3 throwDir = Camera.main.ScreenToViewportPoint(Input.mousePosition);
+        throwableItem.GetComponent<Rigidbody2D>().AddRelativeForce(mousePos * 50, ForceMode2D.Impulse);
+
+
+        //RemoveItemFromQuickSlot(item);
     }
 
     

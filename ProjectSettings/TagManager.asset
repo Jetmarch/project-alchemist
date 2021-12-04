@@ -11,6 +11,7 @@ TagManager:
   - FloorSensor
   - Boiler
   - ItemSlot
+  - Wall
   layers:
   - Default
   - TransparentFX
